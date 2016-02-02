@@ -75,8 +75,8 @@ class MergeVFS(VFS):
 
 class DictVFS(ListVFS):
     #dictionary-based memory VFS.......
-    def __init__(self, root={}):
-        self.root=root
+    def __init__(self, root=None, **kwargs):
+        self.root=root or {}
     def load(self, path):
         try:
             f=self.root
@@ -92,7 +92,7 @@ class DictVFS(ListVFS):
             if name not in f:
                 f[name]={}
             f=f[name]
-        f[names[:-1]]=content
+        f[names[-1]]=content
     def mkdir(self, path):
         f=self.root
         names=self.parse_path(path)
@@ -131,8 +131,3 @@ class MemVFS(ListVFS):
         res+=map(lambda s: re.sub('/[^/]*$', '', s), self.allfiles)
         #also add superdirs for each dir.....
         return res
-        
-class Project(SubdirVFS):
-    #SubdirVFS with additional information.....
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)

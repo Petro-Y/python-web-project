@@ -1,9 +1,16 @@
 #!cmd /k py -3
-import vfs
+from vfs import *
 import re
 
-def find_subtasks(project):
-    subtasks=[]
+        
+class Project(DictVFS):
+    #SubdirVFS with additional information.....
+    def __init__(self, *args, **kwargs):
+        self.__dict__.update(kwargs)
+        super().__init__(*args, **kwargs)
+
+def find_fragments(project):
+    fragments=[]
     for filename in project.get_all_files():
         print('file:', filename)
         nested=0; ln=0
@@ -11,12 +18,12 @@ def find_subtasks(project):
             ln+=1
             print(ln, ':', s, end='')
             #find ":subtask SUBTASKNAME:" and ":endsubtask:",
-            #skip nested subtasks:
+            #skip nested fragments:
             stname=re.findall(r':subtask\s([^:\s]+):', s)
             if stname:
                 print('subtask:', stname[0])
                 if nested==0:
-                    subtasks+=[dict(
+                    fragments+=[dict(
                             begin=ln,
                             name=stname[0],
                             globalname='%s@%s' % (stname[0].split('/', 1)[0], project.id),
@@ -25,21 +32,20 @@ def find_subtasks(project):
             elif s.find(':endsubtask:')>=0:
                 nested-=1
                 if nested==0:
-                    subtasks[-1]['end']=ln
-    return subtasks
+                    fragments[-1]['end']=ln
+    return fragments
 
     
 def extract_subtasks(project):
-    subtasks=find_subtasks(project)
-    projects={}
-    for st in subtasks:
-        if st.name not in projects:
-            projects[st.name]=Project(implements=st.name)#use subtask id instead....
-        # with projects[st.name].open(st.filename, 'a') as f:
-            # for s in project.load(filename)[st.begin-1:st.end]:
-                # f.write(s)
-        prjects[st.name].save(st.filename, projects[st.name].load(st.filename)+project.load(filename)[st.begin-1:st.end])
-    return projects
+    subtasks={}
+    for fr in find_fragments(project):
+        if fr['globalname'] not in subtasks:
+            subtasks[fr['globalname']]=Project(implements=fr['globalname'])
+        
+        subtasks[fr['globalname']].save(fr['filename'], 
+        subtasks[fr['globalname']].load(fr['filename'])
+        +project.load(fr['filename'])[fr['begin']-1:fr['end']])
+    return subtasks
     
 def apply_subtasks(project, impls):
     for impl in impls:
@@ -51,7 +57,7 @@ def text2list(text):
     return list(map(lambda s:s+'\n', text.split('\n')))
     
 if __name__=='__main__':
-    myproj=vfs.DictVFS(
+    myproj=Project(
         {
             'file':text2list('''
                     #include <stdio.h>
@@ -73,9 +79,13 @@ if __name__=='__main__':
                         another text here
                         :endsubtask:
             ''')}
-        })
-    myproj.id='0000'
+        },
+        id='0000')
     print(myproj.get_all_files())
     #print(myproj.load('subdir/file'))
     #print(myproj.root)
-    print(find_subtasks(myproj))
+    print(find_fragments(myproj))
+    sts=extract_subtasks(myproj)
+    for st in sts:
+        print(st)
+        print(sts[st].root)
