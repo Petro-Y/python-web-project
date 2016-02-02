@@ -13,12 +13,11 @@ class VFS:
         #ensure path doesn't start from /.. .......
         return path
     def parse_path(self, path):
-        return path.split('/')#also remove empty items....
-    def mkdir(self, path): pass
-    def rmdir(self, path): pass
-    def ls(self, path): pass
+        return list(filter(lambda s:s, path.split('/')))#also remove empty items
     def get_all_files(self): pass
     def get_all_dirs(self): pass
+    def mkdir(self, path): pass
+    def rm(self, path): pass
     def ls(self, path): pass
     def exists(self, path): pass
     def isdir(self, path): pass
@@ -68,18 +67,24 @@ class SubdirVFS(VFS):
     pass
 
 class MergeVFS(VFS):
-    '''Join multiple VFSes into one single'''
+    '''Join multiple VFSes into single one'''
+    def __init__(self, *vfses, **kwargs):
+        super().__init__(**kwargs)
+        self.vfses=vfses
     pass
 
 class DictVFS(ListVFS):
     #dictionary-based memory VFS.......
-    def __init__(self):
-        self.root={}
+    def __init__(self, root={}):
+        self.root=root
     def load(self, path):
-        f=self.root
-        for name in self.parse_path(path):
-            f=f[name]
-        return f[:]
+        try:
+            f=self.root
+            for name in self.parse_path(path):
+                f=f[name]
+            return f[:]
+        except Exception:
+            return []
     def save(self, path, content):
         f=self.root
         names=self.parse_path(path)
@@ -88,11 +93,26 @@ class DictVFS(ListVFS):
                 f[name]={}
             f=f[name]
         f[names[:-1]]=content
-    
-    pass
+    def mkdir(self, path):
+        f=self.root
+        names=self.parse_path(path)
+        for name in names:
+            if name not in f:
+                f[name]={}
+            f=f[name]
+    def get_all_files(self, root=None):
+        res=[]
+        if root==None:
+            root=self.root
+        for name in root:
+            if isinstance(root[name], dict):
+                res+=map(lambda s:name+'/'+s, self.get_all_files(root[name]))
+            else:
+                res+=[name]
+        return res
         
 class MemVFS(ListVFS):
-    #not ready. Please dont read this trash :-|
+    #not ready and possibly will be removed. Please dont read this trash :-|
     def __init__(self, *args, **kwargs):
         self.allfiles={}
         self.dirs=[]
