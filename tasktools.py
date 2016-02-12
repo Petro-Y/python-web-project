@@ -1,5 +1,5 @@
 #!cmd /k py -3
-from vfs import *
+from vfs import DictVFS
 import re
 
         

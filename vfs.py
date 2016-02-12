@@ -21,14 +21,35 @@ class VFS:
     def ls(self, path): pass
     def exists(self, path): pass
     def isdir(self, path): pass
-    
+
+class ListReadStream:
+    def __init__(self, lst):
+        self.it=iter(lst)
+        
+    def __exit__(self):pass
+    def read(self):
+        try:
+            return next(self.it)
+        except Exception:
+            return ''
+
+
+class ListWriteStream:
+    def __init__(self, lst):
+        self.lst=lst
+        
+    def __exit__(self):pass
+    def write(self, s):
+        lst+=[s+'\n']
+    pass
     
 class ListVFS(VFS):
     '''Abstract file system where file can be loaded and saved as a list of strings'''
     def open(self, path, mode='r'): 
         if mode=='r':
-            #create iterator with read() and close() metods......
-            pass
+            #create iterator with read() and close() metods:
+            return ListReadStream(self.load(path))
+            
         elif mode=='w':
             #create object with write() method to store data in a list and close() to save the list....
             pass
