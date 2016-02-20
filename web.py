@@ -20,7 +20,7 @@ Log in:
     <input type=submit>
 </form>
 or register:
-<form method=POST>
+<form method=POST action=register>
     User: <input name=user><br>
     Password: <input name=password type=password><br>
     Password (2): <input name=password2 type=password><br>
@@ -31,9 +31,14 @@ or register:
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    #if password2 and email fields posted, try to registrate....
-    #else try to log in.....
+    #try to log in.....
     return redirect('.')
+
+@app.route('/register', methods=['POST'])
+def login_post():
+    #if password2 and email fields posted, try to register (and log in)....
+    return redirect('.')
+
 
 @app.route('/logout')
 def logout_page():
