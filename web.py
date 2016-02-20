@@ -2,12 +2,13 @@
 
 from flask import Flask, request, redirect
 app = Flask(__name__)
+app.secret_key='ssdhgj_mdzj'
 
 @app.route('/')
 def main_page():
-    #my projects list....
     #users....
-    return redirect('login')
+    user='None'
+    return redirect(user if user else 'login')
 
 @app.route('/login', methods=['GET'])
 def login_page():
@@ -18,7 +19,7 @@ Log in:
     Password: <input name=password type=password><br>
     <input type=submit>
 </form>
-or registrate:
+or register:
 <form method=POST>
     User: <input name=user><br>
     Password: <input name=password type=password><br>
@@ -38,11 +39,23 @@ def login_post():
 def logout_page():
     pass
 
-@app.route('/project')
-def project_page():
+@app.route('/<user>/<project>/')
+def project_page(user, project):
     #show files of the project....
     #show subtasks list....
-    pass
+    return '''
+    <h1>User: %s</h1>
+    <h2>Project: %s<h2>
+    '''% (user, project)
+
+@app.route('/<user>/')
+def user_page(user):
+    #user's projects list....
+    return '''
+    <h1>User: %s</h1>
+    '''%user
+
+
 
 @app.route('/subtask')
 def subtask_page():
