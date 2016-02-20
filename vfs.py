@@ -76,6 +76,9 @@ class DiskVFS(StreamVFS):
         super().__init__(*args, **kwargs)
         self.basepath=path
         #if such dir not exist, create it....
+    def open(self, path, *args, **kwargs):
+        #prepare path....
+        return open(path, *args, **kwargs)
     pass
 
 class SubdirVFS(VFS):
@@ -131,24 +134,4 @@ class DictVFS(ListVFS):
             else:
                 res+=[name]
         return res
-        
-class MemVFS(ListVFS):
-    #not ready and possibly will be removed. Please dont read this trash :-|
-    def __init__(self, *args, **kwargs):
-        self.allfiles={}
-        self.dirs=[]
-   
-    def __getitem__(self, path):
-        return self.allfiles[translate_path(path)]
-        
-    def __setitem__(self, path, content):
-        self.allfiles[translate_path(path)]=content
-        
-    def get_all_files(self):
-        return self.allfiles
-        
-    def get_all_dirs(self):
-        res=self.dirs.copy()
-        res+=map(lambda s: re.sub('/[^/]*$', '', s), self.allfiles)
-        #also add superdirs for each dir.....
-        return res
+

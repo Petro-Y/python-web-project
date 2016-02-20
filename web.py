@@ -7,7 +7,7 @@ app = Flask(__name__)
 def main_page():
     #my projects list....
     #users....
-    pass
+    return redirect('login')
 
 @app.route('/login', methods=['GET'])
 def login_page():
@@ -29,10 +29,10 @@ or registrate:
 '''
 
 @app.route('/login', methods=['POST'])
-def login_page():
+def login_post():
     #if password2 and email fields posted, try to registrate....
     #else try to log in.....
-    pass
+    return redirect('.')
 
 @app.route('/logout')
 def logout_page():
