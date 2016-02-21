@@ -20,7 +20,7 @@ def login_post():
     return redirect('./')
 
 @app.route('/register', methods=['POST'])
-def login_post():
+def register_post():
     #if password2 and email fields posted, try to register (and log in)....
     return redirect('./')
 
@@ -33,7 +33,11 @@ def logout_page():
 def project_page(user, project):
     #show files of the project....
     #show subtasks list....
-    return render_template('project.html', user=user, project=project)
+    files=['file1.c', 'file2.c', 'file3.html']
+    subtasks=['st1', 'st2']
+    supertasks=['project']
+    return render_template('project.html', user=user, project=project,
+                files=files, subtasks=subtasks, supertasks=supertasks)
     # return '''
     # <h1>User: %s</h1>
     # <h2>Project: %s<h2>

@@ -2,9 +2,27 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>{{user}} &gt; {{project}}</title>
 </head>
 <body>
-
+    <h1>{{user}} &gt; {{project}}</h1>
+    <h2>Files:</h2>
+        <ul>
+        {% for f in files %}
+        <li>{{f}}</li>
+        {% endfor %}
+        </ul>
+    <h2>Subtasks:</h2>
+        <ul>
+        {% for p in subtasks %}
+        <li>{{p}}</li>
+        {% endfor %}
+        </ul>
+    <h2>subtask of:</h2>
+        <ul>
+        {% for p in supertasks %}
+        <li>{{p}}</li>
+        {% endfor %}
+        </ul>
 </body>
 </html>
