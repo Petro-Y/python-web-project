@@ -52,6 +52,7 @@ Collective Development Job Manager
 Структура даних
 ===============
 
+``
   БД
     table user
         id
@@ -75,4 +76,4 @@ Collective Development Job Manager
                 subdir/
                     file3.txt
                     subsubdir/
-                        ...
+                        ...``
