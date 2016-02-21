@@ -1,6 +1,6 @@
 #!cmd /k py -3
 
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template
 app = Flask(__name__)
 app.secret_key='ssdhgj_mdzj'
 
@@ -12,32 +12,17 @@ def main_page():
 
 @app.route('/login', methods=['GET'])
 def login_page():
-    return '''
-Log in:
-<form method=POST>
-    User: <input name=user><br>
-    Password: <input name=password type=password><br>
-    <input type=submit>
-</form>
-or register:
-<form method=POST action=register>
-    User: <input name=user><br>
-    Password: <input name=password type=password><br>
-    Password (2): <input name=password2 type=password><br>
-    E-mail: <input name=email type=email>
-    <input type=submit>
-</form>
-'''
+    return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def login_post():
     #try to log in.....
-    return redirect('.')
+    return redirect('./')
 
 @app.route('/register', methods=['POST'])
 def login_post():
     #if password2 and email fields posted, try to register (and log in)....
-    return redirect('.')
+    return redirect('./')
 
 
 @app.route('/logout')
@@ -48,17 +33,19 @@ def logout_page():
 def project_page(user, project):
     #show files of the project....
     #show subtasks list....
-    return '''
-    <h1>User: %s</h1>
-    <h2>Project: %s<h2>
-    '''% (user, project)
+    return render_template('project.html', user=user, project=project)
+    # return '''
+    # <h1>User: %s</h1>
+    # <h2>Project: %s<h2>
+    # '''% (user, project)
 
 @app.route('/<user>/')
 def user_page(user):
     #user's projects list....
-    return '''
-    <h1>User: %s</h1>
-    '''%user
+    return render_template('user.html', user=user)
+    # return '''
+    # <h1>User: %s</h1>
+    # '''%user
 
 
 
