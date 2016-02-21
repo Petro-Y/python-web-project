@@ -37,6 +37,7 @@ def project_page(user, project):
     subtasks=['st1', 'st2']
     supertasks=['project']
     return render_template('project.html', user=user, project=project,
+                           is_subtask=False,
                 files=files, subtasks=subtasks, supertasks=supertasks)
     # return '''
     # <h1>User: %s</h1>

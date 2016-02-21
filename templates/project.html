@@ -6,23 +6,27 @@
 </head>
 <body>
     <h1>{{user}} &gt; {{project}}</h1>
+    {%if supertasks%}
+    <h2>{%if is_subtask%}subtask of:{%else%}implements{%endif%}</h2>
+        <ul>
+        {% for p in supertasks %}
+        <li>{{p}}</li>
+        {% endfor %}
+        </ul>
+    {%endif%}
     <h2>Files:</h2>
         <ul>
         {% for f in files %}
         <li>{{f}}</li>
         {% endfor %}
         </ul>
+    {%if subtasks%}
     <h2>Subtasks:</h2>
         <ul>
         {% for p in subtasks %}
         <li>{{p}}</li>
         {% endfor %}
         </ul>
-    <h2>subtask of:</h2>
-        <ul>
-        {% for p in supertasks %}
-        <li>{{p}}</li>
-        {% endfor %}
-        </ul>
+    {%endif%}
 </body>
 </html>
