@@ -51,29 +51,28 @@ Collective Development Job Manager
 
 Структура даних
 ===============
-
-``
-  БД
-    table user
-        id
-        name
-        passhash
-    table project
-        id
-        user_id
-        status (project, test_project, subtask, subtask_done, subtask_cancelled)
-        implementation_id
-    table project_rel
-        id
-        project_id
-        owner_id
-  Файли
-    users/
-        <user>/
-            <project>/
-                file1.ext
-                file2.ext
-                subdir/
-                    file3.txt
-                    subsubdir/
-                        ...``
+    
+      БД
+        table user
+            id
+            name
+            passhash
+        table project
+            id
+            user_id
+            status (project, test_project, subtask, subtask_done, subtask_cancelled)
+            implementation_id
+        table project_rel
+            id
+            project_id
+            owner_id
+      Файли
+        users/
+            <user>/
+                <project>/
+                    file1.ext
+                    file2.ext
+                    subdir/
+                        file3.txt
+                        subsubdir/
+                            ...
