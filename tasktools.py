@@ -50,6 +50,7 @@ def extract_subtasks(project):
 def apply_subtasks(project, impls):
     for impl in impls:
         #get subtask data and subst it into project.....
+        subtask_data=find_fragments(impl)
         #also copy new files (if they do not already exist in project)....
         pass
     

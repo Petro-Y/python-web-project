@@ -9,16 +9,19 @@
             text-align: right;
             width: 300px;
             height:150px;
-            background:#efe;
+            background:inherit;/*#efe;*/
+            padding:10px;
             position:absolute;
-            top:40px;
+            top:50px;
             left:10px;
             z-index:9;
             }
+        {%if not register%}
         .tabs li:first-child form
             {
             z-index:10;
             }
+        {%endif%}
         .tabs
             {
             list-style:none;
@@ -28,18 +31,25 @@
             {
             background:white;
             display:inline-block;
+            padding:0 15px;
+
             }
         .tabs li:hover form, .tabs form:focus
             {
             z-index:11;
             }
+        .tabs li p
+            {
+            padding:0;
+            }
     </style>
 </head>
 <body>
+{%if error%}<div class="error">{{error}}</div>{%endif%}
 <ul class="tabs">
 <li style="background:cyan"><p>Log in</p>
 <form method=POST>
-    User: <input name=user><br>
+    User: <input name=user value="{{user}}"><br>
     Password: <input name=password type=password><br>
     <input type=submit>
 </form></li>

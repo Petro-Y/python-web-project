@@ -1,8 +1,9 @@
-import sqlite3
+from sqlite3 import connect
+
+db_name='project.db'
 
 def create_db():
-
-    conn=sqlite3.connect('library')
+    conn=connect(db_name)
     cur=conn.cursor()
     cur.executescript('''
     create table user
@@ -24,3 +25,8 @@ def create_db():
     conn.commit()
     cur.close()
     conn.close()
+
+def project_data(username, project):
+    '''return dict( user=user, project=project,
+                           is_subtask=False,
+                files=files, subtasks=subtasks, supertasks=supertasks)'''

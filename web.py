@@ -1,14 +1,13 @@
 #!cmd /k py -3
 
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session
 app = Flask(__name__)
 app.secret_key='ssdhgj_mdzj'
 
 @app.route('/')
 def main_page():
-    #users....
-    user='None'
-    return redirect(user if user else 'login')
+    user=session['current_user'] if 'current_user' in session else None
+    return redirect(user+'/' if user else 'login')
 
 @app.route('/login', methods=['GET'])
 def login_page():
@@ -16,17 +15,29 @@ def login_page():
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    #try to log in.....
+    #try to log in:
+    user=request.form['user']
+    password=request.form['password']
+    #check user and password (show login page with error message if user/password is wrong..........
+    session['current_user']=user
     return redirect('./')
 
 @app.route('/register', methods=['POST'])
 def register_post():
     #if password2 and email fields posted, try to register (and log in)....
+    #
+    user=request.form['user']
+    password=request.form['password']
+    password2=request.form['password2']
+    #if password!=password2: show error message....
+    #elif user already exists:show error message....
+    email=request.form['email']
     return redirect('./')
 
 
 @app.route('/logout')
 def logout_page():
+    #del session['current_user']
     pass
 
 @app.route('/<user>/<project>/')
