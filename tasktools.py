@@ -9,9 +9,9 @@ class Project(DictVFS):
         self.__dict__.update(kwargs)
         super().__init__(*args, **kwargs)
 
-def find_fragments(project):
+def find_fragments(project, base=None, only_file=None):
     fragments=[]
-    for filename in project.get_all_files():
+    for filename in ([only_file] if only_file else project.get_all_files()):
         print('file:', filename)
         nested=0; ln=0
         for s in project.load(filename):
@@ -20,7 +20,7 @@ def find_fragments(project):
             #find ":subtask SUBTASKNAME:" and ":endsubtask:",
             #skip nested fragments:
             stname=re.findall(r':subtask\s([^:\s]+):', s)
-            if stname:
+            if stname and stname!=base:
                 print('subtask:', stname[0])
                 if nested==0:
                     fragments+=[dict(
@@ -30,9 +30,10 @@ def find_fragments(project):
                             filename=filename)]
                 nested+=1
             elif s.find(':endsubtask:')>=0:
-                nested-=1
-                if nested==0:
-                    fragments[-1]['end']=ln
+                if nested>0:
+                    nested-=1
+                    if nested==0:
+                        fragments[-1]['end']=ln
     return fragments
 
     
@@ -49,10 +50,22 @@ def extract_subtasks(project):
     
 def apply_subtasks(project, impls):
     for impl in impls:
-        #get subtask data and subst it into project.....
-        subtask_data=find_fragments(impl)
-        #also copy new files (if they do not already exist in project)....
-        pass
+        #get subtask data and subst it into project:
+        impl_fragments=(filter lambda fr: fr['globalname']==impl.base, find_fragments(impl))# filter main subtask only
+        project_fragments={fr['name']:fr for fr in find_fragments(project)}
+        for impl_fr in impl_fragments:
+            project_fr=project_fragments[impl_fr['name']]
+            project_text=project.load(project_fr['filename'])
+            impl_text=project.load(impl_fr['filename'])
+            project_text[project_fr['begin']:project_fr['end']]=impl_text[impl_fr['begin']:impl_fr['end']]
+            project.save(project_fr['filename'], project_text)
+            #find subtasks in this file again:
+            project_fragments.update({fr['name']:fr for fr in find_fragments(project, only_file=project_fr['filename'])})
+            pass
+        #also copy new files (if they do not already exist in project):
+        for f in impl.get_all_files():
+            if not project.exists(f):
+                project.save(f, impl.load(f))
     
 def text2list(text):
     return list(map(lambda s:s+'\n', text.split('\n')))

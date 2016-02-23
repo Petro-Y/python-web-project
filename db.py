@@ -19,8 +19,10 @@ def create_db():
     create table project_rel
             (id int primary key auto increment,
             project_id int,
-            owner_id int);
-
+            base_id int);
+    create table status
+            (id int,
+            name char(20));
     ''')
     conn.commit()
     cur.close()
