@@ -1,6 +1,7 @@
 from sqlite3 import connect
 
-db_name='project.db'
+#db_name='project.db'
+from settings import db_name
 
 def create_db():
     conn=connect(db_name)

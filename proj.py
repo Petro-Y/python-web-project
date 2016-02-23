@@ -3,10 +3,13 @@
 import vfs
 import db
 import tasktools
+from settings import usersdir
 
 def project_by_name(user, project):
-    #go to users root dir....
-    #create project_vfs object ..........
+    #go to users root dir, create project_vfs object:
+    path=usersdir+user+'/'+project
+    project_vfs=vfs.DiskVFS(path)
+    #or extract it from cache(?) ....
     #add properties (stored in db): subtasks, supertasks, status....
     pass
 
