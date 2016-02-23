@@ -1,5 +1,6 @@
 #!cmd /k py -3
 
+from db import *
 from flask import Flask, request, redirect, render_template, session
 app = Flask(__name__)
 app.secret_key='ssdhgj_mdzj'
@@ -18,8 +19,11 @@ def login_post():
     #try to log in:
     user=request.form['user']
     password=request.form['password']
-    #check user and password (show login page with error message if user/password is wrong..........
-    session['current_user']=user
+    #check user and password (show login page with error message if user/password is wrong:
+    if check_user(user, password):
+        session['current_user']=user
+    else:
+        return render_template('login.html', error="Неправильний логін чи пароль!", user=user)
     return redirect('./')
 
 @app.route('/register', methods=['POST'])
@@ -29,16 +33,22 @@ def register_post():
     user=request.form['user']
     password=request.form['password']
     password2=request.form['password2']
-    #if password!=password2: show error message....
-    #elif user already exists:show error message....
     email=request.form['email']
+    if password!=password2: 
+        return render_template('login.html', error='Вкажіть один і той же пароль двічі!', user=user, email=email, register=True)
+    elif user_exists(user): 
+        return render_template('login.html', error="Користувача з таким ім'ям уже зареєстровано!", user=user, email=email, register=True)
+    elif email_exists(email): 
+        return render_template('login.html', error="Потрібна унікальна адреса електронної пошти!", user=user, email=email, register=True)
+    add_user(user, password, email)
+    session['current_user']=user
     return redirect('./')
 
 
 @app.route('/logout')
 def logout_page():
-    #del session['current_user']
-    pass
+    del session['current_user']
+    return redirect('./')
 
 @app.route('/<user>/<project>/')
 def project_page(user, project):

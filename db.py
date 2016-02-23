@@ -32,3 +32,13 @@ def project_data(username, project):
     '''return dict( user=user, project=project,
                            is_subtask=False,
                 files=files, subtasks=subtasks, supertasks=supertasks)'''
+    pass
+                
+def user_exists(username):
+    pass #true if user exists....                
+def email_exists(email):
+    pass #true if user exists....
+def add_user(user, password, email):
+    pass
+def check_user(user, password):
+    pass
