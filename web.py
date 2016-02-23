@@ -1,6 +1,7 @@
 #!cmd /k py -3
 
 from db import *
+import proj
 from flask import Flask, request, redirect, render_template, session
 app = Flask(__name__)
 app.secret_key='ssdhgj_mdzj'
@@ -55,7 +56,7 @@ def logout_page():
     
 @app.route('/<user>/<project>/<path:fname>', methods=['GET'])
 def file_page(user, project, fname):
-    project_vfs=...#get project....
+    project_vfs=proj.project_by_name(user, project)
     content=''.join(project_vfs.load(fname))
     #if ?mode=raw, show content as plain text:
     try:
@@ -74,17 +75,18 @@ def file_post(user, project, fname):
                error='Ви не маєте прав редагувати файл. Створіть відгалуження проекту чи реалізацію підзадачі')
         #show error message (fork/implement?)
     #save changes:
-    project_vfs=...#get project....
+    project_vfs=proj.project_by_name(user, project)
     project_vfs.save(fname, content)
     return redirect('.')
 
 @app.route('/<user>/<project>/')
 def project_page(user, project):
+    project_vfs=proj.project_by_name(user, project)
     #show files of the project....
     #show subtasks list....
-    files=['file1.c', 'file2.c', 'file3.html']
-    subtasks=['st1', 'st2']
-    supertasks=['project']
+    files=['file1.c', 'file2.c', 'file3.html']#get them from project_vfs........
+    subtasks=['st1', 'st2']#project_vfs.get_subtasks() ......
+    supertasks=['project']#project_vfs.get_supertasks() .....
     return render_template('project.html', user=user, project=project,
                            is_subtask=False,
                 files=files, subtasks=subtasks, supertasks=supertasks)
