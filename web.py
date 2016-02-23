@@ -49,6 +49,18 @@ def register_post():
 def logout_page():
     del session['current_user']
     return redirect('./')
+    
+@app.route('/<user>/<project>/<path:fname>', methods=['GET'])
+def file_page(user, project, fname):
+    #get project....
+    f=''.join(project.load(fname))
+    return render_template('file.html', f=f, fname=fname)
+    
+    
+@app.route('/<user>/<project>/<path:fname>', methods=['GET'])
+def file_post(user, project, fname):
+    #save changes.....
+    return redirect('.')
 
 @app.route('/<user>/<project>/')
 def project_page(user, project):
@@ -60,10 +72,7 @@ def project_page(user, project):
     return render_template('project.html', user=user, project=project,
                            is_subtask=False,
                 files=files, subtasks=subtasks, supertasks=supertasks)
-    # return '''
-    # <h1>User: %s</h1>
-    # <h2>Project: %s<h2>
-    # '''% (user, project)
+
 
 @app.route('/<user>/')
 def user_page(user):
