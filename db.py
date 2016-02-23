@@ -30,6 +30,9 @@ def create_db():
     conn.close()
 
 def project_data(username, project):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    #is_subtask: select status from project
     '''return dict( user=user, project=project,
                            is_subtask=False,
                 files=files, subtasks=subtasks, supertasks=supertasks)'''
