@@ -12,16 +12,16 @@ class Project(DictVFS):
 def find_fragments(project, base=None, only_file=None):
     fragments=[]
     for filename in ([only_file] if only_file else project.get_all_files()):
-        print('file:', filename)
+        #print('file:', filename)
         nested=0; ln=0
         for s in project.load(filename):
             ln+=1
-            print(ln, ':', s, end='')
+            #(ln, ':', s, end='')
             #find ":subtask SUBTASKNAME:" and ":endsubtask:",
             #skip nested fragments:
             stname=re.findall(r':subtask\s([^:\s]+):', s)
             if stname and stname!=base:
-                print('subtask:', stname[0])
+                #print('subtask:', stname[0])
                 if nested==0:
                     fragments+=[dict(
                             begin=ln,
@@ -51,7 +51,7 @@ def extract_subtasks(project):
 def apply_subtasks(project, impls):
     for impl in impls:
         #get subtask data and subst it into project:
-        impl_fragments=(filter lambda fr: fr['globalname']==impl.base, find_fragments(impl))# filter main subtask only
+        impl_fragments=filter(lambda fr: fr['globalname']==impl.base, find_fragments(impl))# filter main subtask only
         project_fragments={fr['name']:fr for fr in find_fragments(project)}
         for impl_fr in impl_fragments:
             project_fr=project_fragments[impl_fr['name']]

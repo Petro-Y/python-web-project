@@ -28,18 +28,21 @@ def login_post():
 
 @app.route('/register', methods=['POST'])
 def register_post():
-    #if password2 and email fields posted, try to register (and log in)....
+    #if password2 and email fields posted, try to register (and log in)
     #
     user=request.form['user']
     password=request.form['password']
     password2=request.form['password2']
     email=request.form['email']
     if password!=password2: 
-        return render_template('login.html', error='Вкажіть один і той же пароль двічі!', user=user, email=email, register=True)
+        return render_template('login.html', error='Вкажіть один і той же пароль двічі!',
+                               user=user, email=email, register=True)
     elif user_exists(user): 
-        return render_template('login.html', error="Користувача з таким ім'ям уже зареєстровано!", user=user, email=email, register=True)
+        return render_template('login.html', error="Користувача з таким ім'ям уже зареєстровано!",
+                               user=user, email=email, register=True)
     elif email_exists(email): 
-        return render_template('login.html', error="Потрібна унікальна адреса електронної пошти!", user=user, email=email, register=True)
+        return render_template('login.html', error="Потрібна унікальна адреса електронної пошти!",
+                               user=user, email=email, register=True)
     add_user(user, password, email)
     session['current_user']=user
     return redirect('./')
@@ -52,14 +55,27 @@ def logout_page():
     
 @app.route('/<user>/<project>/<path:fname>', methods=['GET'])
 def file_page(user, project, fname):
-    #get project....
-    f=''.join(project.load(fname))
-    return render_template('file.html', f=f, fname=fname)
+    project_vfs=...#get project....
+    content=''.join(project_vfs.load(fname))
+    #if ?mode=raw, show content as plain text:
+    try:
+        if request.args.get('mode')=='raw':
+            return content, 200, {'Content-Type': 'text/plain; charset=utf-8'}
+    except Exception:
+        pass
+    return render_template('file.html', f=content, fname=fname, user=user, project=project)
     
     
-@app.route('/<user>/<project>/<path:fname>', methods=['GET'])
+@app.route('/<user>/<project>/<path:fname>', methods=['POST'])
 def file_post(user, project, fname):
-    #save changes.....
+    content=request.form['content']
+    if session['current_user']!=user:
+        return render_template('file.html', f=content, fname=fname, user=user, project=project,
+               error='Ви не маєте прав редагувати файл. Створіть відгалуження проекту чи реалізацію підзадачі')
+        #show error message (fork/implement?)
+    #save changes:
+    project_vfs=...#get project....
+    project_vfs.save(fname, content)
     return redirect('.')
 
 @app.route('/<user>/<project>/')
