@@ -5,6 +5,7 @@
     <title>{{fname}}</title>
 </head>
 <body>
+{%if error%}<div class="error">{{error}}</div>{%endif%}
     <form method=POST>
         <textarea name=content>{{f}}</textarea>
         <input type=submit>

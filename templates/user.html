@@ -2,9 +2,27 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>{{user}}</title>
 </head>
 <body>
+<h2>Projects</h2>
+<ul>
+{%for i in projects%}
+    <li>{{i}}</li>
+{%endfor%}
+</ul>
+<h2>Subtasks</h2>
+<ul>
+{%for i in subtasks%}
+    <li>{{i}}</li>
+{%endfor%}
+</ul>
+<h2>QA tasks</h2>
+<ul>
+{%for i in qatasks%}
+    <li>{{i}}</li>
+{%endfor%}
+</ul>
 
 </body>
 </html>

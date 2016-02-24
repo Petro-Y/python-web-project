@@ -14,8 +14,7 @@ def create_db():
     create table project
             (id int primary key auto increment,
             user_id int,
-            status int,''' # (0=project, 1=test_project, 2=subtask, 3=subtask_done, 4=subtask_cancelled)
-    '''
+            status int,
             implementation_id int);
     create table project_rel
             (id int primary key auto increment,
@@ -23,7 +22,15 @@ def create_db():
             base_id int);
     create table status
             (id int,
+            category int,
             name char(20));
+    insert into status values
+            (0, 0, 'project'),
+            (1, 0, 'test_project'),
+            (2, 1, 'subtask'),
+            (3, 1, 'subtask_done'),
+            (4, 1, 'subtask_cancelled),
+            (5, 2, 'qa_task');
     ''')
     conn.commit()
     cur.close()

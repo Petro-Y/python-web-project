@@ -51,18 +51,18 @@
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
 <ul class="tabs">
-<li style="background:cyan"><p>Log in</p>
+<li style="background:#efe"><p>Log in</p>
 <form method=POST>
     User: <input name=user value="{{user}}"><br>
     Password: <input name=password type=password><br>
     <input type=submit>
 </form></li>
-<li style="background:yellow"><p>or register:</p>
+<li style="background:#fef"><p>Register:</p>
 <form method=POST action=register>
-    User: <input name=user><br>
+    User: <input name=user value="{{user}}"><br>
     Password: <input name=password type=password><br>
     Password (2): <input name=password2 type=password><br>
-    E-mail: <input name=email type=email><br>
+    E-mail: <input name=email type=email value="{{email}}"><br>
     <input type=submit>
 </form></li></ul>
 </body>
