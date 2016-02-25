@@ -28,5 +28,11 @@
         {% endfor %}
         </ul>
     {%endif%}
+    {%if testbuild%}
+    <form method=POST action=build/{{testbuild}}>
+    	<textarea name=testreport></textarea>
+    	<input type=submit>
+    </form>
+    {%endif%}
 </body>
 </html>

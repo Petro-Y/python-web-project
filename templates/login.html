@@ -3,49 +3,14 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Log in or Register</title>
+    <link rel=stylesheet href=static/style.css>
     <style>
-        .tabs form
-            {
-            text-align: right;
-            width: 300px;
-            height:150px;
-            background:inherit;/*#efe;*/
-            padding:10px;
-            position:absolute;
-            top:50px;
-            left:10px;
-            z-index:9;
-            }
         {%if not register%}
         .tabs li:first-child form
             {
             z-index:10;
             }
         {%endif%}
-        .tabs
-            {
-            list-style:none;
-            position:relative;
-            }
-        .tabs li
-            {
-            background:white;
-            display:inline-block;
-            padding:0 15px;
-
-            }
-        .tabs li:hover form, .tabs form:focus
-            {
-            z-index:11;
-            }
-        .tabs li p
-            {
-            padding:0;
-            }
-        .error
-            {
-            color:red;
-            }
     </style>
 </head>
 <body>
