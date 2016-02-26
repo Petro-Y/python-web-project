@@ -13,6 +13,7 @@ def create_db():
             passhash char(20));
     create table project
             (id int primary key auto increment,
+            name char(50),
             user_id int,
             status int,
             implementation_id int);
@@ -40,15 +41,26 @@ def project_data(username, project):
     conn=connect(db_name)
     cur=conn.cursor()
     cur.execute('''
-    select status from project
+    select status.category from project
     join user on project.user_id=user.id
-    where 
-    ''')#......
+    join status on project.status=status.id
+    where user.name=? and project.name=?
+    ''', (username, project))
     for row in cur:
         #is_subtask: select status from project
+        is_subtask=row[0]==1
+    cur.close()
+    #files.....
+    
+    #subtasks....
+    cur=conn.cursor()
+    cur.execute('''
+    select ....
+    ''', (project,))
+    for row in cur:
         pass
     cur.close()
-
+    #supertasks....
 
     conn.close()
     '''return dict( user=user, project=project,
