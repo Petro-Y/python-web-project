@@ -114,8 +114,31 @@ def email_exists(email):
     finally:
         cur.close() 
         conn.close()
-    
+
+def get_passhash(user, password):
+    pass #md5 for user+password+passhashsecret....
+
 def add_user(user, password, email):
-    pass
+    passhash=get_passhash(user, password)
+    conn=connect(db_name)
+    cur=conn.cursor()
+    cur.execute('''
+    insert into user(user, passhash, email) values (?, ?, ?)
+    ''', (user, passhash, email))
+    cur.close() 
+    conn.close()
+        
 def check_user(user, password):
-    pass
+    try:
+        passhash=get_passhash(user, password)
+        conn=connect(db_name)
+        cur=conn.cursor()
+        cur.execute('''
+        select * from user where name=? and passhash=?
+        ''', (user, passhash))
+        for row in cur:
+            return True
+        return False
+    finally:
+        cur.close() 
+        conn.close()
