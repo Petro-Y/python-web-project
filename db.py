@@ -11,7 +11,8 @@ def create_db():
     create table user
             (id int primary key auto increment,
             name char(50),
-            passhash char(20));
+            passhash char(20)
+            email char(100));
     create table project
             (id int primary key auto increment,
             name char(50),
@@ -38,7 +39,7 @@ def create_db():
     cur.close()
     conn.close()
 
-def project_data(username, project):
+def project_data(user, project):
     conn=connect(db_name)
     cur=conn.cursor()
     cur.execute('''
@@ -46,7 +47,7 @@ def project_data(username, project):
     join user on project.user_id=user.id
     join status on project.status=status.id
     where user.name=? and project.name=?
-    ''', (username, project))
+    ''', (user, project))
     for row in cur:
         #is_subtask: select status from project
         is_subtask=row[0]==1
@@ -87,9 +88,33 @@ def project_data(username, project):
             subtasks=subtasks, supertasks=supertasks)
                 
 def user_exists(username):
-    pass #true if user exists....                
+    try:
+        conn=connect(db_name)
+        cur=conn.cursor()
+        cur.execute('''
+        select name from user where name=?
+        ''', (username))
+        for row in cur:
+            return True
+        return False
+    finally:
+        cur.close() 
+        conn.close()
+    
 def email_exists(email):
-    pass #true if user exists....
+    try:
+        conn=connect(db_name)
+        cur=conn.cursor()
+        cur.execute('''
+        select email from user where email=?
+        ''', (email))
+        for row in cur:
+            return True
+        return False
+    finally:
+        cur.close() 
+        conn.close()
+    
 def add_user(user, password, email):
     pass
 def check_user(user, password):
