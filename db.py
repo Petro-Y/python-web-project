@@ -1,8 +1,8 @@
 from sqlite3 import connect
+from hashlib import md5
 
-#db_name='project.db'
-from settings import db_name
 from proj import project_by_name
+from settings import db_name, passhashsecret
 
 def create_db():
     conn=connect(db_name)
@@ -11,7 +11,7 @@ def create_db():
     create table user
             (id int primary key auto increment,
             name char(50),
-            passhash char(20)
+            passhash char(32)
             email char(100));
     create table project
             (id int primary key auto increment,
@@ -38,6 +38,9 @@ def create_db():
     conn.commit()
     cur.close()
     conn.close()
+    add_user('boss', 'boss', 'boss@example.com')
+    add_user('slave', 'slave', 'slave@example.com')
+    add_user('qa', 'qa', 'qa@example.com')
 
 def project_data(user, project):
     conn=connect(db_name)
@@ -116,7 +119,7 @@ def email_exists(email):
         conn.close()
 
 def get_passhash(user, password):
-    pass #md5 for user+password+passhashsecret....
+    return md5((user+password+passhashsecret).encode()).digest()
 
 def add_user(user, password, email):
     passhash=get_passhash(user, password)

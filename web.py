@@ -3,8 +3,9 @@
 from db import *
 import proj
 from flask import Flask, request, redirect, render_template, session
+from settings import secret_key
 app = Flask(__name__)
-app.secret_key='ssdhgj_mdzj'
+app.secret_key=secret_key
 
 @app.route('/')
 def main_page():
