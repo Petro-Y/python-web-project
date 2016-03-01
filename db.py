@@ -8,23 +8,23 @@ def create_db():
     conn=connect(db_name)
     cur=conn.cursor()
     cur.executescript('''
-    create table user
-            (id int primary key auto increment,
+    create table user(
+            id int primary key auto increment,
             name char(50),
             passhash char(32)
             email char(100));
-    create table project
-            (id int primary key auto increment,
+    create table project(
+            id int primary key auto increment,
             name char(50),
             user_id int,
             status int,
             implementation_id int);
-    create table project_rel
-            (id int primary key auto increment,
+    create table project_rel(
+            id int primary key auto increment,
             slave_id int,
             master_id int);
-    create table status
-            (id int,
+    create table status(
+            id int,
             category int,
             name char(20));
     insert into status values
@@ -34,6 +34,11 @@ def create_db():
             (3, 1, 'subtask_done'),
             (4, 1, 'subtask_cancelled),
             (5, 2, 'qa_task');
+    create table test(
+            id int,
+            report text,
+            build char(120)
+            );
     ''')
     conn.commit()
     cur.close()
