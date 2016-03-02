@@ -83,8 +83,10 @@ def file_post(user, project, fname):
 @app.route('/<user>/<project>/')
 def project_page(user, project):
     project_vfs=proj.project_by_name(user, project)
-    #show files of the project....
-    #show subtasks list....
+    #show files of the project
+    #show subtasks list
+    return render_template('project.html', is_current=session['current_user']==user, **project_data(user, project))
+    
     files=['file1.c', 'file2.c', 'file3.html']#get them from project_vfs........
     subtasks=['st1', 'st2']#project_vfs.get_subtasks() ......
     supertasks=['project']#project_vfs.get_supertasks() .....
@@ -96,11 +98,7 @@ def project_page(user, project):
 @app.route('/<user>/')
 def user_page(user):
     #user's projects list....
-    return render_template('user.html', user=user)
-    # return '''
-    # <h1>User: %s</h1>
-    # '''%user
-
+    return render_template('user.html', user=user, projects=projects, subtasks=subtasks, quatasks=qatasks)
 
 
 @app.route('/subtask')
