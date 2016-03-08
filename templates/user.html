@@ -3,26 +3,38 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>{{user}}</title>
+    <link href="static/style.css" rel="stylesheet">
 </head>
 <body>
-<h2>Projects</h2>
-<ul>
-{%for i in projects%}
-    <li><a href={{i}}>{{i}}</a></li>
-{%endfor%}
-</ul>
-<h2>Subtasks</h2>
-<ul>
-{%for i in subtasks%}
-    <li><a href={{i}}>{{i}}</a></li>
-{%endfor%}
-</ul>
-<h2>QA tasks</h2>
-<ul>
-{%for i in qatasks%}
-    <li>{{i}}</li>
-{%endfor%}
-</ul>
-
+    <ul class="tabs">
+        <li id="projects">
+            <a href="#projects">Projects</a>
+            <ul>
+                {%for i in projects%}
+                <li>
+                    <a href="{{i}}">{{i}}</a>
+                </li>
+                {%endfor%}
+            </ul>
+        </li>
+        <li id="subtasks">
+            <a href="#subtasks">Subtasks</a>
+            <ul>
+                {%for i in subtasks%}
+                <li>
+                    <a href="{{i}}">{{i}}</a>
+                </li>
+                {%endfor%}
+            </ul>
+        </li>
+        <li id="qa">
+            <a href="#qa">QA tasks</a>
+            <ul>
+                {%for i in qatasks%}
+                <li>{{i}}</li>
+                {%endfor%}
+            </ul>
+        </li>
+    </ul>
 </body>
 </html>

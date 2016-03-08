@@ -1,4 +1,4 @@
-.tabs form
+.tabs>li>form
     {
     text-align: right;
     width: 300px;
@@ -6,7 +6,7 @@
     background:inherit;/*#efe;*/
     padding:10px;
     position:absolute;
-    top:50px;
+    top:20px;
     left:10px;
     z-index:9;
     }
@@ -15,22 +15,37 @@
     list-style:none;
     position:relative;
     }
-.tabs li
+.tabs>li
     {
     background:white;
     display:inline-block;
     padding:0 15px;
-
     }
-.tabs li:hover form, .tabs form:focus
+.tabs>li:target>form
     {
-    z-index:11;
+    z-index:11 !important;
     }
-.tabs li p
+.tabs>li:hover>form
     {
+    z-index:12 !important;
+    }
+.tabs>li>p, .tabs>li>a
+    {
+    display:block;
     padding:0;
+    margin:0;
+    text-decoration:none;
+    color:black;
     }
 .error
     {
     color:red;
     }
+#register
+	{
+	background:#fef;
+	}
+#login
+	{
+	background:#efe;
+	}

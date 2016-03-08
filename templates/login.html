@@ -16,13 +16,13 @@
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
 <ul class="tabs">
-<li style="background:#efe"><p>Log in</p>
+<li id=login><a href=#login>Log in</a>
 <form method=POST>
     User: <input name=user value="{{user}}"><br>
     Password: <input name=password type=password><br>
     <input type=submit>
 </form></li>
-<li style="background:#fef"><p>Register:</p>
+<li id=register><a href=#register>Register</a>
 <form method=POST action=register>
     User: <input name=user value="{{user}}"><br>
     Password: <input name=password type=password><br>

@@ -3,36 +3,44 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>{{user}} &gt; {{project}}</title>
+    <link rel=stylesheet href=static/style.css>
 </head>
 <body>
     <h1>{{user}} &gt; {{project}}</h1>
+  <ul class=tabs>
     {%if supertasks%}
-    <h2>{%if is_subtask%}subtask of:{%else%}implements{%endif%}</h2>
+    <li id=supertasks><a href=#supertasks>{%if is_subtask%}subtask of:{%else%}implements{%endif%}</a>
         <ul>
         {% for p in supertasks %}
         <li>{{p}}</li>
         {% endfor %}
         </ul>
+    </li>
     {%endif%}
-    <h2>Files:</h2>
+    <li id=files><a href=#files>Files:</a>
         <ul>
         {% for f in files %}
         <li>{{f}}</li>
         {% endfor %}
         </ul>
+    </li>
     {%if subtasks%}
-    <h2>Subtasks:</h2>
+    <li id=subtasks><a href=#subtasks>Subtasks:</a>
         <ul>
         {% for p in subtasks %}
         <li>{{p}}</li>
         {% endfor %}
         </ul>
+    </li>
     {%endif%}
     {%if testbuild%}
-    <form method=POST action=build/{{testbuild}}>
-    	<textarea name=testreport></textarea>
-    	<input type=submit>
-    </form>
+    <li id=test><a href=#test>Test report</a>
+	    <form method=POST action=build/{{testbuild}}>
+		<textarea name=testreport></textarea>
+		<input type=submit>
+	    </form>
+    </li>
     {%endif%}
+  </ul>
 </body>
 </html>

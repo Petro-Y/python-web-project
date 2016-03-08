@@ -101,7 +101,7 @@ def user_page(user):
     return render_template('user.html', user=user, projects=projects, subtasks=subtasks, quatasks=qatasks)
 
 
-@app.route('/subtask')
+#@app.route('/subtask')
 def subtask_page():
     #show implementations list....
     #my: subtask controls.....
