@@ -116,9 +116,13 @@ def project_data(user, project):
 def user_data(username):
   try:
     #.....
-    return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks)
+    return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks, reports=reports)
   except:
-    return dict(user=username, projects=['project1', 'project2'], subtasks=['subtask1', 'subtask2'], quatasks=['test1', 'test2'])
+    return dict(user=username,
+                projects=['project1', 'project2'],
+                subtasks=['subtask1', 'subtask2'],
+                quatasks=['test1', 'test2'],
+                reports=[('QA', '22.03.2016', 'Deadline error: nothing implemented!!!')])
 
 
 def user_exists(username):
