@@ -4,8 +4,12 @@ from db import *
 import proj
 from flask import Flask, request, redirect, render_template, session
 from settings import secret_key
+from flask_socketio import SocketIO, emit
+
+
 app = Flask(__name__)
 app.secret_key=secret_key
+socketio = SocketIO(app)
 
 @app.route('/')
 def main_page():
@@ -15,6 +19,15 @@ def main_page():
 @app.route('/login', methods=['GET'])
 def login_page():
     return render_template('login.html')
+
+@app.route('/ws', methods=['GET'])
+def ws_page():
+    return render_template('ws.html')
+
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
+    emit('my response', {'data': 'hello'})
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -109,4 +122,4 @@ def subtask_page():
     pass
 
 if __name__=='__main__':
-    app.run()
+    socketio.run(app)
