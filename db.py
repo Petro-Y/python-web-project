@@ -37,8 +37,17 @@ def create_db():
     create table test(
             id int,
             report text,
-            build char(120)
+            build_id int
             );
+    create table build(
+           id int,
+           name char(120),
+           project_id int,
+           created datetime
+           );
+    create table build_impl(
+           build_id int,
+           impl_id int
     ''')
     conn.commit()
     cur.close()

@@ -41,6 +41,17 @@
 	    </form>
     </li>
     {%endif%}
+    {%if reports%}
+    <li id="reports"><a href=#reports>All test reports</a>
+        <ul>
+        {% for qa, dt, r in reports %}
+        <li>{{qa}} {{dt}}:
+            <blockquote>{{r}}</blockquote>
+        </li>
+        {% endfor %}
+        </ul>
+    </li>
+    {%endif%}
     <li><a href=#zip>upload/download</a>
         <form method="POST">
             <input type="file" name="zip" placeholder="Upload as zip">
