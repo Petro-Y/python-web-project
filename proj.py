@@ -38,3 +38,9 @@ def build(user, project, implementations):
 def integrate(user, project, implementations):
     #apply_subtasks permanently......
     pass
+
+def getzip(user, project):
+    pass #generate (or find) zip for project.......
+
+def fromzip(user, project, arch):
+    pass #extract files from zip.....

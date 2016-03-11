@@ -48,6 +48,7 @@ def create_db():
     add_user('qa', 'qa', 'qa@example.com')
 
 def project_data(user, project):
+  try:
     conn=connect(db_name)
     cur=conn.cursor()
     cur.execute('''
@@ -91,10 +92,26 @@ def project_data(user, project):
     cur.close()
 
     conn.close()
+
     return dict( user=user, project=project,
-            is_subtask=is_subtask, files=files, 
+            is_subtask=is_subtask, files=files,
             subtasks=subtasks, supertasks=supertasks)
-                
+  except:
+    return dict(
+        files=['file1.c', 'file2.c', 'file3.html'],#get them from project_vfs........
+        subtasks=['st1', 'st2'],#project_vfs.get_subtasks() ......
+        supertasks=['project'],#project_vfs.get_supertasks() .....
+        is_subtask=False)
+
+
+def user_data(username):
+  try:
+    #.....
+    return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks)
+  except:
+    return dict(user=username, projects=['project1', 'project2'], subtasks=['subtask1', 'subtask2'], quatasks=['test1', 'test2'])
+
+
 def user_exists(username):
     try:
         conn=connect(db_name)

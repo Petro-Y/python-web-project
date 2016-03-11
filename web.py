@@ -93,25 +93,22 @@ def file_post(user, project, fname):
     project_vfs.save(fname, content)
     return redirect('.')
 
-@app.route('/<user>/<project>/')
+@app.route('/<user>/<project>/', methods=['GET'])
 def project_page(user, project):
     project_vfs=proj.project_by_name(user, project)
+    #if mode=='zip': generate zip archive.....
     #show files of the project
     #show subtasks list
     return render_template('project.html', is_current=session['current_user']==user, **project_data(user, project))
-    
-    files=['file1.c', 'file2.c', 'file3.html']#get them from project_vfs........
-    subtasks=['st1', 'st2']#project_vfs.get_subtasks() ......
-    supertasks=['project']#project_vfs.get_supertasks() .....
-    return render_template('project.html', user=user, project=project,
-                           is_subtask=False,
-                files=files, subtasks=subtasks, supertasks=supertasks)
 
+
+@app.route('/<user>/<project>/', methods=['GET'])
+def project_post(user, project):
+    pass#upload zip, or upload test-report......
 
 @app.route('/<user>/')
 def user_page(user):
-    #user's projects list....
-    return render_template('user.html', user=user, projects=projects, subtasks=subtasks, quatasks=qatasks)
+    return render_template('user.html', **user_data(user))
 
 
 #@app.route('/subtask')
