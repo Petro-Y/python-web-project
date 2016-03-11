@@ -18,7 +18,8 @@ def create_db():
             name char(50),
             user_id int,
             status int,
-            implementation_id int);
+            implementation_id int,''' #what's this? supertask?...
+            '''changed datetime);
     create table project_rel(
             id int primary key auto increment,
             slave_id int,
