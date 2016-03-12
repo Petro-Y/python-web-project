@@ -9,6 +9,7 @@ from uuid import uuid4
 
 def project_by_name(user, project):
     #go to users root dir, create project_vfs object:
+    print("I'm project_by_name", user, project)
     path=usersdir+user+'/'+project
     project_vfs=vfs.DiskVFS(path)
     #or extract it from cache(?) ....

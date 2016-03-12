@@ -1,4 +1,4 @@
-.tabs>li>form
+.tabs>li>form, .tabs>li>ul
     {
     text-align: right;
     width: 300px;
@@ -17,17 +17,21 @@
     }
 .tabs>li
     {
-    background:white;
+    background:silver;
     display:inline-block;
     padding:0 15px;
     }
-.tabs>li:target>form
+.tabs li:first-child>form,.tabs>li:first-child>ul
     {
-    z-index:11 !important;
+    z-index:10;
     }
-.tabs>li:hover>form
+.tabs>li:target>form,.tabs>li:target>ul
     {
-    z-index:12 !important;
+    z-index:20 !important;
+    }
+.tabs>li:hover>form,.tabs>li:hover>ul
+    {
+    z-index:21 !important;
     }
 .tabs>li>p, .tabs>li>a
     {

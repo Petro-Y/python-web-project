@@ -49,6 +49,11 @@ def create_db():
     create table build_impl(
            build_id int,
            impl_id int
+           );
+    create table qa_watch(
+           qa_user_id int,
+           project_id int
+           );
     ''')
     conn.commit()
     cur.close()
@@ -58,6 +63,7 @@ def create_db():
     add_user('qa', 'qa', 'qa@example.com')
 
 def project_data(user, project):
+  print('project_data', user, project)
   try:
     conn=connect(db_name)
     cur=conn.cursor()
@@ -107,7 +113,8 @@ def project_data(user, project):
             is_subtask=is_subtask, files=files,
             subtasks=subtasks, supertasks=supertasks)
   except:
-    return dict(
+    print('project_data problems...')
+    return dict( user=user, project=project,
         files=['file1.c', 'file2.c', 'file3.html'],#get them from project_vfs........
         subtasks=['st1', 'st2'],#project_vfs.get_subtasks() ......
         supertasks=['project'],#project_vfs.get_supertasks() .....

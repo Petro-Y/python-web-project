@@ -95,14 +95,16 @@ def file_post(user, project, fname):
 
 @app.route('/<user>/<project>/', methods=['GET'])
 def project_page(user, project):
-    project_vfs=proj.project_by_name(user, project)
+    #project_vfs=proj.project_by_name(user, project)
     #if mode=='zip': generate zip archive.....
     #show files of the project
     #show subtasks list
-    return render_template('project.html', is_current=session['current_user']==user, **project_data(user, project))
+    return render_template('project.html',
+        is_current=session['current_user']==user if 'current_user' in session else False,
+        **project_data(user, project))
 
 
-@app.route('/<user>/<project>/', methods=['GET'])
+@app.route('/<user>/<project>/', methods=['POST'])
 def project_post(user, project):
     pass#upload zip, or upload test-report......
 
