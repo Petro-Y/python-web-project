@@ -1,6 +1,7 @@
 .tabs>li>form, .tabs>li>ul
     {
-    height:150px;
+    height:300px;
+    overflow:auto;
     background:inherit;/*#efe;*/
     padding:10px;
     position:absolute;
@@ -10,13 +11,18 @@
     }
 .tabs>li>ul
     {
-    width: 600px;	
+    padding-left:40px;
+    width: 570px;	
     }
 .tabs>li>form
     {
     text-align: right;
     width:300px;
     padding-right:310px;
+    }
+.tabs>li>form>textarea
+    {
+    width:100%;
     }
 .tabs
     {
@@ -57,9 +63,33 @@
     }
 #register
 	{
-	background:#fef;
+	background:#faf;
 	}
 #login
 	{
-	background:#efe;
+	background:#cfc;
+	}
+#supertasks
+	{
+	background:#ffa;
+	}
+#subtasks
+	{
+	background:#afa;
+	}
+#files
+	{
+	background:#ccf;
+	}
+#reports, #qa
+	{
+	background:#fcc;
+	}
+#zip
+	{
+	background:#aff;
+	}
+#projects
+	{
+	background:#ccf;
 	}

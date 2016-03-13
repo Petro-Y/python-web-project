@@ -7,9 +7,20 @@
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
+<ul class=tabs>
+    <li id=files><a href=#files>File</a>
     <form method=POST>
-        <textarea name=content>{{f}}</textarea>
+        <textarea name=content rows=10>{{f}}</textarea><br>
         <input type=submit>
     </form>
+    </li>
+    <li id=zip><a href=#zip>upload/download</a>
+        <form method="POST">
+            <input type="file" name="zip" placeholder="Upload">
+            <input type="submit">
+            <br><a href=".?mode=raw">Download</a>
+        </form>
+    </li>
+</ul>
 </body>
 </html>
