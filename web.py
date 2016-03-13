@@ -1,10 +1,12 @@
 #!cmd /k py -3
 
+from flask import Flask, request, redirect, render_template, session
+from flask_socketio import SocketIO, emit
+
 from db import *
 import proj
-from flask import Flask, request, redirect, render_template, session
-from settings import secret_key
-from flask_socketio import SocketIO, emit
+from settings import secret_key, enable_reset
+
 
 
 app = Flask(__name__)
@@ -116,12 +118,14 @@ def project_post(user, project):
 def user_page(user):
     return render_template('user.html', **user_data(user))
 
-
-#@app.route('/subtask')
-def subtask_page():
-    #show implementations list....
-    #my: subtask controls.....
-    #others: 'implement...' button....
+try:
+    if enbale_reset: 
+        @app.route(/reset)
+        def reset_page():
+            create_db()
+            return '''DB creation/reset complete.<br>
+            To prevent this in future, remove 'enable_reset=True' line in settings.py and restart server.'''
+except:
     pass
 
 if __name__=='__main__':

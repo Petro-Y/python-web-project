@@ -9,3 +9,5 @@ buildsdir=rootdir+'builds/'
 
 passhashsecret='3f61a0a041fe98decc152b1d5f94ea63'
 secret_key='8ffc1cececb0a97ae8d6045dbf75fd49'
+
+enable_reset=True
