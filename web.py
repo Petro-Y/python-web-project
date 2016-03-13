@@ -70,15 +70,19 @@ def logout_page():
     
 @app.route('/<user>/<project>/<path:fname>', methods=['GET'])
 def file_page(user, project, fname):
-    project_vfs=proj.project_by_name(user, project)
-    content=''.join(project_vfs.load(fname))
+    content=''; error=''
+    try:
+        project_vfs=proj.project_by_name(user, project)
+        content=''.join(project_vfs.load(fname))
+    except:
+        error='No such file exists'
     #if ?mode=raw, show content as plain text:
     try:
         if request.args.get('mode')=='raw':
             return content, 200, {'Content-Type': 'text/plain; charset=utf-8'}
     except Exception:
         pass
-    return render_template('file.html', f=content, fname=fname, user=user, project=project)
+    return render_template('file.html', f=content, fname=fname, user=user, project=project, error=error)
     
     
 @app.route('/<user>/<project>/<path:fname>', methods=['POST'])

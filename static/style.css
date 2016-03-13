@@ -1,7 +1,5 @@
 .tabs>li>form, .tabs>li>ul
     {
-    text-align: right;
-    width: 300px;
     height:150px;
     background:inherit;/*#efe;*/
     padding:10px;
@@ -10,6 +8,16 @@
     left:10px;
     z-index:9;
     }
+.tabs>li>ul
+    {
+    width: 600px;	
+    }
+.tabs>li>form
+    {
+    text-align: right;
+    width:300px;
+    padding-right:310px;
+    }
 .tabs
     {
     list-style:none;
@@ -17,6 +25,8 @@
     }
 .tabs>li
     {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     background:silver;
     display:inline-block;
     padding:0 15px;

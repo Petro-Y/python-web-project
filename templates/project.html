@@ -6,6 +6,7 @@
     <link rel=stylesheet href=../../static/style.css>
 </head>
 <body>
+{%if error%}<div class="error">{{error}}</div>{%endif%}
     <h1>{{user}} &gt; {{project}}</h1>
   <ul class=tabs>
     {%if supertasks%}
@@ -52,7 +53,7 @@
         </ul>
     </li>
     {%endif%}
-    <li><a href=#zip>upload/download</a>
+    <li id=zip><a href=#zip>upload/download</a>
         <form method="POST">
             <input type="file" name="zip" placeholder="Upload as zip">
             <input type="submit">

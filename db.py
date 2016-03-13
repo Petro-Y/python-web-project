@@ -114,10 +114,11 @@ def project_data(user, project):
             subtasks=subtasks, supertasks=supertasks)
   except:
     print('project_data problems...')
-    return dict( user=user, project=project,
+    return dict( user=user, project=project, error='Stub mode (DB is inaccessible)',
         files=['file1.c', 'file2.c', 'file3.html'],#get them from project_vfs........
         subtasks=['st1', 'st2'],#project_vfs.get_subtasks() ......
-        supertasks=['project'],#project_vfs.get_supertasks() .....
+        supertasks=['project'],#project_vfs.get_supertasks() .....,
+        reports=[('QA', '22.03.2016', 'Deadline error: nothing implemented!!!')],
         is_subtask=False)
 
 
@@ -126,11 +127,10 @@ def user_data(username):
     #.....
     return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks, reports=reports)
   except:
-    return dict(user=username,
+    return dict(user=username, error='Stub mode (DB is inaccessible)',
                 projects=['project1', 'project2'],
                 subtasks=['subtask1', 'subtask2'],
-                quatasks=['test1', 'test2'],
-                reports=[('QA', '22.03.2016', 'Deadline error: nothing implemented!!!')])
+                qatasks=['test1', 'test2'])
 
 
 def user_exists(username):
