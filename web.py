@@ -114,17 +114,17 @@ def project_page(user, project):
 def project_post(user, project):
     pass#upload zip, or upload test-report......
 
-@app.route('/<user>/')
+@app.route('/<user>/', methods=['GET'])
 def user_page(user):
     return render_template('user.html', **user_data(user))
 
 try:
     if enbale_reset: 
-        @app.route(/reset)
+        @app.route('/reset')
         def reset_page():
             create_db()
             return '''DB creation/reset complete.<br>
-            To prevent this in future, remove 'enable_reset=True' line in settings.py and restart server.'''
+            To prevent this in future, remove 'enable_reset=True' from settings.py and restart the server.'''
 except:
     pass
 

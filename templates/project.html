@@ -10,18 +10,23 @@
     <h1>{{user}} &gt; {{project}}</h1>
   <ul class=tabs>
     {%if supertasks%}
-    <li id=supertasks><a href=#supertasks>{%if is_subtask%}subtask of:{%else%}implements{%endif%}</a>
+    <li id=supertasks><a href=#supertasks>{%if is_subtask%}subtask of{%else%}implements{%endif%}</a>
         <ul>
         {% for p in supertasks %}
-        <li>{{p}}</li>
+        <li><a href="/{{p}}">{{p}}</a></li>
         {% endfor %}
+        {%if is_subtask%}
+        <li><form action=".?action=addproj" method=POST>
+        	<input name=testproj placeholder="Add test project"><input type=submit>
+        </form></li>
+        {%endif%}
         </ul>
     </li>
     {%endif%}
     <li id=files><a href=#files>Files:</a>
         <ul>
         {% for f in files %}
-        <li>{{f}}</li>
+        <li><a href="{{f}}">{{f}}</a></li>
         {% endfor %}
         </ul>
     </li>
@@ -29,31 +34,29 @@
     <li id=subtasks><a href=#subtasks>Subtasks:</a>
         <ul>
         {% for p in subtasks %}
-        <li>{{p}}</li>
+        <li><a href="../{{p}}">{{p}}</a></li>
         {% endfor %}
         </ul>
     </li>
     {%endif%}
-    {%if testbuild%}
     <li id=test><a href=#test>Test report</a>
 	    <form method=POST action=build/{{testbuild}}>
 		<textarea name=testreport></textarea>
 		<input type=submit>
 	    </form>
     </li>
-    {%endif%}
     {%if reports%}
     <li id="reports"><a href=#reports>All test reports</a>
         <ul>
         {% for qa, dt, r in reports %}
-        <li>{{qa}} {{dt}}:
+        <li><a href="/{{qa}}">{{qa}}</a> {{dt}}:
             <blockquote>{{r}}</blockquote>
         </li>
         {% endfor %}
         </ul>
     </li>
     {%endif%}
-    <li id=zip><a href=#zip>upload/download</a>
+    <li id=load><a href=#load>upload/download</a>
         <form method="POST">
             <input type="file" name="zip" placeholder="Upload as zip">
             <input type="submit">

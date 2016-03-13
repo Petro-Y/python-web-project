@@ -2,19 +2,25 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>{{fname}}</title>
+    <title>{{user}} &gt; {{project}} &gt; {{fname}}</title>
     <link rel=stylesheet href=/static/style.css>
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
 <ul class=tabs>
-    <li id=files><a href=#files>File</a>
+    <li id=files><a href=#files>Edit</a>
     <form method=POST>
         <textarea name=content rows=10>{{f}}</textarea><br>
         <input type=submit>
     </form>
     </li>
-    <li id=zip><a href=#zip>upload/download</a>
+    <li id=renmov><a href=#renmov>Rename/move</a>
+    <form method=POST>
+        <input name=filepath value="{{file}}"><br>
+        <input type=submit>
+    </form>
+    </li>
+    <li id=load><a href=#load>upload/download</a>
         <form method="POST">
             <input type="file" name="zip" placeholder="Upload">
             <input type="submit">

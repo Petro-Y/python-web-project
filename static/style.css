@@ -12,12 +12,12 @@
 .tabs>li>ul
     {
     padding-left:40px;
-    width: 570px;	
+    width: 870px;	
     }
 .tabs>li>form
     {
     text-align: right;
-    width:300px;
+    width:600px;
     padding-right:310px;
     }
 .tabs>li>form>textarea
@@ -85,7 +85,7 @@
 	{
 	background:#fcc;
 	}
-#zip
+#load
 	{
 	background:#aff;
 	}
