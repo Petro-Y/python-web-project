@@ -63,7 +63,7 @@ def create_db():
     add_user('qa', 'qa', 'qa@example.com')
 
 def project_data(user, project):
-  print('project_data', user, project)
+  #print('project_data', user, project)
   try:
     conn=connect(db_name)
     cur=conn.cursor()
@@ -113,7 +113,7 @@ def project_data(user, project):
             is_subtask=is_subtask, files=files,
             subtasks=subtasks, supertasks=supertasks)
   except:
-    print('project_data problems...')
+    #print('project_data problems...')
     return dict( user=user, project=project, error='Stub mode (DB is inaccessible)',
         files=['file1.c', 'file2.c', 'file3.html'],#get them from project_vfs........
         subtasks=['st1', 'st2'],#project_vfs.get_subtasks() ......
@@ -130,7 +130,7 @@ def user_data(username):
     return dict(user=username, error='Stub mode (DB is inaccessible)',
                 projects=['project1', 'project2'],
                 subtasks=['subtask1', 'subtask2'],
-                qatasks=['test1', 'test2'])
+                qatasks=[('build/ghg676761', 'user1/project1', 'user2/impl1'), ('user1/project1', 'user1/project1')])
 
 
 def user_exists(username):

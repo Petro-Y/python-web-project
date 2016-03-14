@@ -33,7 +33,7 @@
             <!-- qa tasks interactive check using websockets... -->
             <ul>
                 {%for i in qatasks%}
-                <li>{{i}}</li>
+                <li><a href="/{{i[0]}}"> {{'+'.join(i[1:])}}</a></li>
                 {%endfor%}
             </ul>
         </li>
