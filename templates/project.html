@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>{{user}} &gt; {{project}}</title>
     <link rel=stylesheet href=../../static/style.css>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
@@ -40,16 +41,17 @@
     </li>
     {%endif%}
     <li id=test><a href=#test>Send report</a>
-	    <form method=POST action=build/{{testbuild}}>
-		<textarea name=testreport></textarea>
-		<br><input type=checkbox name=ok value=ok>Test is OK, no errors detected
-		<br><input type=submit>
-        <br><a href=".?watch=true">Watch this project</a>
+	    <form method=POST>
+            <input type="hidden" name="action" value="send_report">
+            <textarea name=testreport></textarea>
+            <br><input type=checkbox name=ok value=ok>Test is OK, no errors detected
+            <br><input type=submit>
+            <br><a href=".?watch=true">Watch this project</a>
 	    </form>
     </li>
     {%if reports%}
     <li id="reports"><a href=#reports>All reports</a>
-        <ul>
+        <ul id="reportslist">
         {% for qa, dt, r in reports %}
         <li><a href="/{{qa}}">{{qa}}</a> {{dt}}:
             <blockquote>{{r}}</blockquote>
@@ -60,6 +62,7 @@
     {%endif%}
     <li id=load><a href=#load>Upload/download</a>
         <form method="POST">
+            <input type="hidden" name="action" value="upload">
             <input type="file" name="zipfile" placeholder="Upload as zip">
             <input type="submit">
             <br><a href=".?mode=zip">Download as zip</a>
@@ -76,5 +79,22 @@
       </form>
     </li>
   </ul>
+
+  <script type="text/javascript" charset="utf-8">
+
+  reports=document.getElementById('reportslist');
+
+
+  var socket = io.connect('http://' + document.domain + ':' + location.port);
+  socket.on('connect', function() {
+      //socket.emit('my event', {data: 'I\'m connected!'});
+  });
+
+  socket.on('qa report', function (data) {
+    console.log(data);
+    reports.innerHTML+='<li>'+data.text+'</li>';
+  });
+
+  </script>
 </body>
 </html>

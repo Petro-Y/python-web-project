@@ -112,7 +112,23 @@ def project_page(user, project):
 
 @app.route('/<user>/<project>/', methods=['POST'])
 def project_post(user, project):
+    print('POST', user, project)
+    action=request.form['action']
+    print('    ', action, user, project)
+    if action=='send_report':
+        report=request.form['testreport']
+        print('test report:', report)
+        #add report to db....
+        try:
+            socketio.emit('qa report', {'text': report})#....
+            # see https://flask-socketio.readthedocs.org/en/latest/
+            # see http://stackoverflow.com/questions/30124701/how-to-emit-websocket-message-from-outside-a-websocket-endpoint
+            print('emit is ok')
+        except Exception as e:
+            print(e)
+    return redirect('./')
     pass#upload zip, or upload test-report......
+
 
 @app.route('/<user>/', methods=['GET'])
 def user_page(user):
