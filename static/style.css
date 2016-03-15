@@ -52,7 +52,7 @@
 .tabs>li>p, .tabs>li>a
     {
     display:block;
-    padding:0;
+    padding:0 0 5px;
     margin:0;
     text-decoration:none;
     color:black;

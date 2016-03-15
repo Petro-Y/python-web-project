@@ -119,7 +119,7 @@ def project_data(user, project):
         subtasks=['st1', 'st2'],#project_vfs.get_subtasks() ......
         supertasks=['project'],#project_vfs.get_supertasks() .....,
         reports=[('QA', '22.03.2016', 'Deadline error: nothing implemented!!!')],
-        is_subtask=False)
+        is_subtask=project.startswith(('st', 'subtask')))
 
 
 def user_data(username):
