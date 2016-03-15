@@ -126,7 +126,7 @@ def project_post(user, project):
             print('emit is ok')
         except Exception as e:
             print(e)
-    return redirect('./')
+    return redirect('/user/project/')
     pass#upload zip, or upload test-report......
 
 
@@ -135,7 +135,7 @@ def user_page(user):
     return render_template('user.html', **user_data(user))
 
 try:
-    if enbale_reset: 
+    if enable_reset:
         @app.route('/reset')
         def reset_page():
             create_db()
