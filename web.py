@@ -112,6 +112,7 @@ def project_page(user, project):
 
 @app.route('/<user>/<project>/', methods=['POST'])
 def project_post(user, project):
+    "upload zip, or upload test-report......"
     print('POST', user, project)
     action=request.form['action']
     print('    ', action, user, project)
@@ -126,8 +127,13 @@ def project_post(user, project):
             print('emit is ok')
         except Exception as e:
             print(e)
+    elif action=='upload':
+        pass #create zip file and send it....
+    elif action=='build':
+        pass#create test build and emit message to QA...
+    elif action=='integrate':
+        pass#integrate current implementation into target project....
     return redirect('/user/project/')
-    pass#upload zip, or upload test-report......
 
 
 @app.route('/<user>/', methods=['GET'])
