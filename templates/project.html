@@ -10,7 +10,7 @@
     <h1>{{user}} &gt; {{project}}</h1>
   <ul class=tabs>
     {%if supertasks%}
-    <li id=supertasks><a href=#supertasks>{%if is_subtask%}subtask of{%else%}implements{%endif%}</a>
+    <li id=supertasks><a href=#supertasks>{%if is_subtask%}Subtask of{%else%}Implements{%endif%}</a>
         <ul>
         {% for p in supertasks %}
         <li><a href="/{{p}}">{{p}}</a></li>
@@ -23,7 +23,7 @@
         </ul>
     </li>
     {%endif%}
-    <li id=files><a href=#files>Files:</a>
+    <li id=files><a href=#files>Files</a>
         <ul>
         {% for f in files %}
         <li><a href="{{f}}">{{f}}</a></li>
@@ -31,7 +31,7 @@
         </ul>
     </li>
     {%if subtasks%}
-    <li id=subtasks><a href=#subtasks>Subtasks:</a>
+    <li id=subtasks><a href=#subtasks>{%if is_subtask%}Implementetions{%else%}Subtasks{%endif%}</a>
         <ul>
         {% for p in subtasks %}
         <li><a href="../{{p}}">{{p}}</a></li>
@@ -39,7 +39,7 @@
         </ul>
     </li>
     {%endif%}
-    <li id=test><a href=#test>Test report</a>
+    <li id=test><a href=#test>Send report</a>
 	    <form method=POST action=build/{{testbuild}}>
 		<textarea name=testreport></textarea>
 		<br><input type=checkbox name=ok value=ok>Test is OK, no errors detected
@@ -47,7 +47,7 @@
 	    </form>
     </li>
     {%if reports%}
-    <li id="reports"><a href=#reports>All test reports</a>
+    <li id="reports"><a href=#reports>All reports</a>
         <ul>
         {% for qa, dt, r in reports %}
         <li><a href="/{{qa}}">{{qa}}</a> {{dt}}:
@@ -57,7 +57,7 @@
         </ul>
     </li>
     {%endif%}
-    <li id=load><a href=#load>upload/download</a>
+    <li id=load><a href=#load>Upload/download</a>
         <form method="POST">
             <input type="file" name="zipfile" placeholder="Upload as zip">
             <input type="submit">
