@@ -83,7 +83,7 @@
 	}
 #reports, #qa
 	{
-	background:#fcc;
+	background:#fdd;
 	}
 #load
 	{
@@ -92,4 +92,16 @@
 #projects
 	{
 	background:#ccf;
+	}
+#renmov
+	{
+	background:#acf;
+	}	
+#test
+	{
+	background:#fb8;
+	}
+#build
+	{
+	background:#daf;
 	}
