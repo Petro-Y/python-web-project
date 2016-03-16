@@ -146,7 +146,9 @@ def user_exists(username):
         select name from user where name=?
         ''', (username,))
         for row in cur:
+            print('user', username, 'found')
             return True
+        print('user', username, 'not found')
         return False
     finally:
         cur.close() 
@@ -167,15 +169,16 @@ def email_exists(email):
         conn.close()
 
 def get_passhash(user, password):
-    return md5((user+password+passhashsecret).encode()).digest()
+    return md5((user+password+passhashsecret).encode()).hexdigest()
 
 def add_user(user, password, email):
     passhash=get_passhash(user, password)
     conn=connect(db_name)
     cur=conn.cursor()
     cur.execute('''
-    insert into user(name, passhash, email) values (?, ?, ?)
+    insert into user (name, passhash, email) values (?, ?, ?);
     ''', (user, passhash, email))
+    conn.commit()
     cur.close() 
     conn.close()
         
