@@ -1,27 +1,33 @@
+#!py -3 -i
 from sqlite3 import connect
 from hashlib import md5
+import os
 
 from proj import project_by_name
 from settings import db_name, passhashsecret
 
 def create_db():
+    try:
+        os.unlink(db_name)
+    except:
+        pass
     conn=connect(db_name)
     cur=conn.cursor()
     cur.executescript('''
     create table user(
-            id int primary key auto increment,
+            id integer primary key autoincrement,
             name char(50),
-            passhash char(32)
+            passhash char(32),
             email char(100));
     create table project(
-            id int primary key auto increment,
+            id integer primary key autoincrement,
             name char(50),
             user_id int,
             status int,
             implementation_id int,''' #what's this? supertask?...
             '''changed datetime);
     create table project_rel(
-            id int primary key auto increment,
+            id integer primary key autoincrement,
             slave_id int,
             master_id int);
     create table status(
@@ -33,7 +39,7 @@ def create_db():
             (1, 0, 'test_project'),
             (2, 1, 'subtask'),
             (3, 1, 'subtask_done'),
-            (4, 1, 'subtask_cancelled),
+            (4, 1, 'subtask_cancelled'),
             (5, 2, 'qa_task');
     create table test(
             id int,
@@ -65,8 +71,7 @@ def create_db():
 def project_data(user, project):
   #print('project_data', user, project)
   try:
-    conn=connect(db_name)
-    cur=conn.cursor()
+    conn=connect(db_name); cur=conn.cursor()
     cur.execute('''
     select status.category from project
     join user on project.user_id=user.id
@@ -139,7 +144,7 @@ def user_exists(username):
         cur=conn.cursor()
         cur.execute('''
         select name from user where name=?
-        ''', (username))
+        ''', (username,))
         for row in cur:
             return True
         return False
@@ -169,7 +174,7 @@ def add_user(user, password, email):
     conn=connect(db_name)
     cur=conn.cursor()
     cur.execute('''
-    insert into user(user, passhash, email) values (?, ?, ?)
+    insert into user(name, passhash, email) values (?, ?, ?)
     ''', (user, passhash, email))
     cur.close() 
     conn.close()

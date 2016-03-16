@@ -1,7 +1,7 @@
 # project factory implementation
 
 import vfs
-import db
+#import db
 import tasktools
 from settings import usersdir, buildsdir
 
