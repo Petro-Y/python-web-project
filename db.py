@@ -50,6 +50,7 @@ def create_db():
            id int,
            name char(120),
            project_id int,
+           impl_id int,
            created datetime
            );
     create table build_impl(
@@ -130,6 +131,34 @@ def project_data(user, project):
 def user_data(username):
   try:
     #.....
+    conn=connect(db_name)
+    cur=conn.cursor()
+    projects=[p for p, in cur.execute('''
+        select name from project
+        join user on user.id=project.user_id
+        join status on project.status=status.id
+        where user.name=? and status.category=0
+    ''', (username,))]
+    subtasks=[p for p, in cur.execute('''
+        select name from project
+        join user on user.id=project.user_id
+        join status on project.status=status.id
+        where user.name=? and status.category=1
+    ''', (username,))]
+    #qa tasks: 
+    #find builds w/o test report for all watched projects....
+    qatasks=[list(row) for row in cur.execute('''
+            with recursive ancestor as 
+                (select project_id from qa_watch
+                union select slave_id from project_rel 
+                join ancestor on ancestor.project_id=project_rel.master_id)
+            select * from build on ancestor.project_id=build.project_id
+    ''', (username,))]
+    #find list of implementations for each of them.....
+    for qatask in qatasks:
+        pass#...
+    
+    #reports....
     return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks, reports=reports)
   except:
     return dict(user=username, error='Stub mode (DB is inaccessible)',
@@ -160,7 +189,7 @@ def email_exists(email):
         cur=conn.cursor()
         cur.execute('''
         select email from user where email=?
-        ''', (email))
+        ''', (email,))
         for row in cur:
             return True
         return False

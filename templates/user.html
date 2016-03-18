@@ -38,6 +38,15 @@
                 {%endfor%}
             </ul>
         </li>
+	<li id="reports"><a href=#reports>All reports</a>
+		<ul id="reportslist">
+		{% for qa, dt, r, p in reports %}
+		<li><a href="/{{qa}}">{{qa}}</a> tested <a href=/{{p}}>{{p}}</a> {{dt}}:
+		    <blockquote>{{r}}</blockquote>
+		</li>
+		{% endfor %}
+		</ul>
+	</li>
     </ul>
 </body>
 </html>
