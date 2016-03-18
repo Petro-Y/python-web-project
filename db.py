@@ -53,10 +53,10 @@ def create_db():
            impl_id int,
            created datetime
            );
-    create table build_impl(
+    /* create table build_impl(
            build_id int,
            impl_id int
-           );
+           ); */
     create table qa_watch(
            qa_user_id int,
            project_id int
@@ -152,10 +152,13 @@ def user_data(username):
                 (select project_id from qa_watch
                 union select slave_id from project_rel 
                 join ancestor on ancestor.project_id=project_rel.master_id)
-            select * from build on ancestor.project_id=build.project_id
+            select * from build 
+            join ancestor on ancestor.project_id=build.project_id
+            where build.id not in (select build_id from test)
     ''', (username,))]
     #find list of implementations for each of them.....
     for qatask in qatasks:
+        
         pass#...
     
     #reports....
