@@ -3,13 +3,13 @@
 from flask import Flask, request, redirect, render_template, session
 from flask_socketio import SocketIO, emit
 from zipfile import ZipFile
-import os
 from werkzeug import secure_filename
+import os
 
 
 from db import *
 import proj
-from settings import secret_key, upload_folder
+from settings import secret_key, upload_folder, rootdir
 
 
 
@@ -109,7 +109,16 @@ def project_page(user, project):
     #project_vfs=proj.project_by_name(user, project)
     try:
         if request.args.get('mode')=='zip':
-            pass#generate zip archive and download it.....
+            # see https://docs.python.org/3/library/zipfile.html
+            # generate zip archive (in /static/download directory)........
+            zfname=rootdir+'static/'+user+'/'+project+'.zip'
+            projdir=project_by_name(user, project).basepath
+            with ZipFile(zfname, 'w') as zf:
+                for filename in project_by_name(user, project).get_all_files():
+                    zf.write(projdir+filename,filename)
+            # and download it:
+            return redirect(zfname)
+            pass
     except:
         pass
     #show files of the project
@@ -144,9 +153,9 @@ def project_post(user, project):
             # extract it....
             filename = secure_filename(zf.filename)
             zf.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            zf=ZipFile(filename)
-            zf.extractall()#prepare target path....
-            pass
+            with ZipFile(filename) as zf:
+                zf.extractall()#prepare target path....
+                # (create new folder for extracted, then remove old files and move it on their place)....
     elif action=='build':
         pass#create test build and emit message to QA...
     elif action=='integrate':

@@ -14,7 +14,7 @@ def project_by_name(user, project):
     project_vfs=vfs.DiskVFS(path)
     #or extract it from cache(?) ....
     #add properties (stored in db): subtasks, supertasks, status....
-    pass
+    return project_vfs
 
 def project_fork(old_user, old_project, new_user, new_project):
     path=usersdir+old_user+'/'+old_project
