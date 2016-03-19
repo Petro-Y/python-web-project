@@ -115,7 +115,7 @@ def project_page(user, project):
             pr=project_by_name(user, project)
             with ZipFile(zfname, 'w') as zf:
                 for filename in pr.get_all_files():
-                    zf.writestr(filename, ''.join(pr.load(filename)))
+                    zf.writestr(filename, ''.join(pr.load(filename)).encode())
             # and download it:
             return redirect(zfname)
             pass
