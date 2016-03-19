@@ -112,10 +112,10 @@ def project_page(user, project):
             # see https://docs.python.org/3/library/zipfile.html
             # generate zip archive (in /static/download directory)........
             zfname=rootdir+'static/'+user+'/'+project+'.zip'
-            projdir=project_by_name(user, project).basepath
+            pr=project_by_name(user, project)
             with ZipFile(zfname, 'w') as zf:
-                for filename in project_by_name(user, project).get_all_files():
-                    zf.write(projdir+filename,filename)
+                for filename in pr.get_all_files():
+                    zf.writestr(filename, ''.join(pr.load(filename)))
             # and download it:
             return redirect(zfname)
             pass
@@ -157,9 +157,12 @@ def project_post(user, project):
                 zf.extractall()#prepare target path....
                 # (create new folder for extracted, then remove old files and move it on their place)....
     elif action=='build':
-        pass#create test build and emit message to QA...
+        #  create test build ...
+        #  emit message to QA...
+        pass
     elif action=='integrate':
-        pass#integrate current implementation into target project....
+        #integrate current implementation into target project....
+        pass
     return redirect('/user/project/')
 
 
