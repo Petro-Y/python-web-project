@@ -230,3 +230,6 @@ def check_user(user, password):
     finally:
         cur.close() 
         conn.close()
+
+def get_qa_list(user, project):
+    pass# get all QAs watching this project......

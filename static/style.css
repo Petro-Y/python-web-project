@@ -81,7 +81,7 @@
 	{
 	background:#ccf;
 	}
-#reports, #qa
+#reports
 	{
 	background:#fdd;
 	}
@@ -97,7 +97,7 @@
 	{
 	background:#acf;
 	}	
-#test
+#test, #qa
 	{
 	background:#fb8;
 	}
@@ -105,3 +105,7 @@
 	{
 	background:#daf;
 	}
+#team
+    {
+    background:#ddd;
+    }

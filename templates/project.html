@@ -8,7 +8,7 @@
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
-    <h1>{{user}} &gt; {{project}}</h1>
+    <h1><a href="/{{user}}">{{user}}</a> &gt; {{project}}</h1>
   <ul class=tabs>
     {%if supertasks%}
     <li id=supertasks><a href=#supertasks>{%if is_subtask%}Subtask of{%else%}Implements{%endif%}</a>
@@ -77,6 +77,14 @@
     		<option value=user1/testcase>user1/testcase</option>
     	</select>
       </form>
+    </li>
+    <li id=team><a href=#team>Project team</a>
+      <ul>
+          <!-- username (role) -->
+          {% for username, role in team %}
+          <li><a href="{{username}}">{{username}} ({{role}})</a></li>
+          {% endfor %}
+      </ul>
     </li>
   </ul>
 
