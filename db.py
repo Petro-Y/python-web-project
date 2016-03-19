@@ -180,13 +180,12 @@ def user_exists(username):
         select name from user where name=?
         ''', (username,))
         for row in cur:
-            print('user', username, 'found')
             return True
-        print('user', username, 'not found')
-        return False
-    finally:
-        cur.close() 
+        cur.close()
         conn.close()
+    except:
+        pass
+    return False
     
 def email_exists(email):
     try:
@@ -197,10 +196,11 @@ def email_exists(email):
         ''', (email,))
         for row in cur:
             return True
-        return False
-    finally:
-        cur.close() 
+        cur.close()
         conn.close()
+    except:
+        pass
+    return False
 
 def get_passhash(user, password):
     return md5((user+password+passhashsecret).encode()).hexdigest()
@@ -226,10 +226,11 @@ def check_user(user, password):
         ''', (user, passhash))
         for row in cur:
             return True
-        return False
-    finally:
-        cur.close() 
+        cur.close()
         conn.close()
+    except:
+        pass
+    return False
 
 def get_qa_list(user, project):
     pass# get all QAs watching this project......
