@@ -40,7 +40,7 @@ class ListWriteStream:
         
     def __exit__(self):pass
     def write(self, s):
-        lst+=[s+'\n']
+        self.lst+=[s+'\n']
     pass
     
 class ListVFS(VFS):
