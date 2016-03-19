@@ -150,6 +150,9 @@ def user_data(username):
     qatasks=[list(row) for row in cur.execute('''
             with recursive ancestor as 
                 (select project_id from qa_watch
+                join project on project.id=qa_watch.project_id
+                join user on user.id=project.user_id
+                wher user.name=?
                 union select slave_id from project_rel 
                 join ancestor on ancestor.project_id=project_rel.master_id)
             select * from build 
