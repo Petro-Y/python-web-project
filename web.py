@@ -2,15 +2,20 @@
 
 from flask import Flask, request, redirect, render_template, session
 from flask_socketio import SocketIO, emit
+from zipfile import ZipFile
+import os
+from werkzeug import secure_filename
+
 
 from db import *
 import proj
-from settings import secret_key, enable_reset
+from settings import secret_key, upload_folder
 
 
 
 app = Flask(__name__)
 app.secret_key=secret_key
+app.config['UPLOAD_FOLDER']=upload_folder
 socketio = SocketIO(app)
 
 @app.route('/')
@@ -102,7 +107,11 @@ def file_post(user, project, fname):
 @app.route('/<user>/<project>/', methods=['GET'])
 def project_page(user, project):
     #project_vfs=proj.project_by_name(user, project)
-    #if mode=='zip': generate zip archive.....
+    try:
+        if request.args.get('mode')=='zip':
+            pass#generate zip archive and download it.....
+    except:
+        pass
     #show files of the project
     #show subtasks list
     return render_template('project.html',
@@ -128,7 +137,16 @@ def project_post(user, project):
         except Exception as e:
             print(e)
     elif action=='upload':
-        pass #create zip file and send it....
+        # upload zip file ....
+        # see http://flask.pocoo.org/docs/0.10/patterns/fileuploads/
+        zf=request.files['zipfile']
+        if zf:
+            # extract it....
+            filename = secure_filename(zf.filename)
+            zf.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            zf=ZipFile(filename)
+            zf.extractall()#prepare target path....
+            pass
     elif action=='build':
         pass#create test build and emit message to QA...
     elif action=='integrate':
@@ -141,6 +159,7 @@ def user_page(user):
     return render_template('user.html', **user_data(user))
 
 try:
+    from settings import enable_reset
     if enable_reset:
         @app.route('/reset')
         def reset_page():
