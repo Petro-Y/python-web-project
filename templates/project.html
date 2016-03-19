@@ -90,7 +90,7 @@
       //socket.emit('my event', {data: 'I\'m connected!'});
   });
 
-  socket.on('qa report', function (data) {
+  socket.on('qa_report {{user}}/{{project}}', function (data) {
     console.log(data);
     reports.innerHTML+='<li>'+data.text+'</li>';
   });
