@@ -8,8 +8,15 @@
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
-    <h1><a href="/{{user}}">{{user}}</a> &gt; {{project}}</h1>
+<h1><a href="/{{user}}">{{user}}</a> &gt; {{project}}</h1>
   <ul class=tabs>
+    <li id=files><a href=#files>Files</a>
+        <ul>
+        {% for f in files %}
+        <li><a href="{{f}}">{{f}}</a></li>
+        {% endfor %}
+        </ul>
+    </li>
     {%if supertasks%}
     <li id=supertasks><a href=#supertasks>{%if is_subtask%}Subtask of{%else%}Implements{%endif%}</a>
         <ul>
@@ -24,13 +31,6 @@
         </ul>
     </li>
     {%endif%}
-    <li id=files><a href=#files>Files</a>
-        <ul>
-        {% for f in files %}
-        <li><a href="{{f}}">{{f}}</a></li>
-        {% endfor %}
-        </ul>
-    </li>
     {%if subtasks%}
     <li id=subtasks><a href=#subtasks>{%if is_subtask%}Implementetions{%else%}Subtasks{%endif%}</a>
         <ul>
