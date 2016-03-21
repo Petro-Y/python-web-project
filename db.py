@@ -147,22 +147,21 @@ def user_data(username):
     ''', (username,))]
     #qa tasks: 
     #find builds w/o test report for all watched projects....
-    qatasks=[list(row) for row in cur.execute('''
+    qatasks=list(cur.execute('''
             with recursive ancestor as 
                 (select project_id from qa_watch
                 join user on user.id=qa_watch.qa_user_id
                 where user.name=?
                 union select slave_id from project_rel 
                 join ancestor on ancestor.project_id=project_rel.master_id)
-            select * from build 
+            select build.name, build.project_id, build.impl_id, build.created from build 
             join ancestor on ancestor.project_id=build.impl_id
             join qa_watch on qa_watch.project_id=build.project_id
             where build.id not in (select build_id from test)
-    ''', (username,))]
+    ''', (username,)))
     #find list of implementations for each of them.....
-    for qatask in qatasks:
-        
-        pass#...
+    qatasks= [[bname]+build_sequence(bproject_id, bimpl_id)
+        for bname, bproject_id, bimpl_id, bcreated in qatasks]
     
     #reports....
     return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks, reports=reports)
@@ -235,3 +234,17 @@ def check_user(user, password):
 
 def get_qa_list(user, project):
     pass# get all QAs watching this project......
+
+def build_sequence(proj_id, impl_id):
+    cur=conn.cursor()
+    res=cur.execute('''
+    with recursive prj as (
+        select id from project 
+        where id=?
+        union select master_id from prj
+        join project_rel on prj.id=slave_id
+    )
+    ''', (impl_id, proj_id))
+    cur.close()
+    conn.close()
+    pass# sequence of projects (from project to impl, excluding subtasks)....
