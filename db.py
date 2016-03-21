@@ -155,7 +155,8 @@ def user_data(username):
                 union select slave_id from project_rel 
                 join ancestor on ancestor.project_id=project_rel.master_id)
             select * from build 
-            join ancestor on ancestor.project_id=build.project_id
+            join ancestor on ancestor.project_id=build.impl_id
+            join qa_watch on qa_watch.project_id=build.project_id
             where build.id not in (select build_id from test)
     ''', (username,))]
     #find list of implementations for each of them.....
