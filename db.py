@@ -236,15 +236,20 @@ def get_qa_list(user, project):
     pass# get all QAs watching this project......
 
 def build_sequence(proj_id, impl_id):
+    conn=connect(db_name)
     cur=conn.cursor()
-    res=cur.execute('''
+    res=list(cur.execute('''
     with recursive prj as (
-        select id from project 
+        select id, user.name ||'/'|| project.name as name from project
+        join user on project.user_id=user.id
         where id=?
-        union select master_id from prj
+        union select master_id,  user.name ||'/'|| project.name ||'+'|| prj.name /* skip subtasks...*/
+        from prj
         join project_rel on prj.id=slave_id
-    )
-    ''', (impl_id, proj_id))
+        join project on master_id=project.id
+        join user on project.user_id=user.id
+    ) select name from prj where id=? limit 1
+    ''', (impl_id, proj_id)))
     cur.close()
     conn.close()
-    pass# sequence of projects (from project to impl, excluding subtasks)....
+    return res[0][0].split('+')# sequence of projects (from project to impl, excluding subtasks)....
