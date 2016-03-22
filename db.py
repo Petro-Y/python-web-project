@@ -243,11 +243,13 @@ def build_sequence(proj_id, impl_id):
         select id, user.name ||'/'|| project.name as name from project
         join user on project.user_id=user.id
         where id=?
-        union select master_id,  user.name ||'/'|| project.name ||'+'|| prj.name /* skip subtasks...*/
+        union select master_id,
+            (case when status.category=1 then user.name ||'/'|| project.name ||'+' else '')|| prj.name
         from prj
         join project_rel on prj.id=slave_id
         join project on master_id=project.id
         join user on project.user_id=user.id
+        join status on project.status=status.id
     ) select name from prj where id=? limit 1
     ''', (impl_id, proj_id)))
     cur.close()
