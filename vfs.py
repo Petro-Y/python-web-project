@@ -21,6 +21,7 @@ class VFS:
         #copy all files from another_vfs:
         for f in another_vfs.get_all_files():
             self.save(f, another_vfs.load(f))
+        return self
     def get_all_files(self): pass
     def get_all_dirs(self): pass
     def mkdir(self, path): pass
