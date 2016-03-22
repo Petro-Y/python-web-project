@@ -49,6 +49,7 @@ def extract_subtasks(project):
     return subtasks
     
 def apply_subtasks(project, impls):
+    # Переробити: рекурсивно викликати останню пару impls...
     for impl in impls:
         #get subtask data and subst it into project:
         impl_fragments=filter(lambda fr: fr['globalname']==impl.base, find_fragments(impl))# filter main subtask only

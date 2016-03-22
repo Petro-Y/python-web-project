@@ -244,7 +244,7 @@ def build_sequence(proj_id, impl_id):
         join user on project.user_id=user.id
         where id=?
         union select master_id,
-            (case when status.category=1 then user.name ||'/'|| project.name ||'+' else '')|| prj.name
+            (case when status.category=0 then user.name ||'/'|| project.name ||'+' else '' end)|| prj.name
         from prj
         join project_rel on prj.id=slave_id
         join project on master_id=project.id
