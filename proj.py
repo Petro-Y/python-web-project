@@ -7,7 +7,9 @@ from settings import usersdir, buildsdir
 
 from uuid import uuid4
 
-def project_by_name(user, project):
+def project_by_name(user, project=None):
+    if project==None:
+        return project_by_name(*user.split('/', 1))
     #go to users root dir, create project_vfs object:
     print("I'm project_by_name", user, project)
     path=usersdir+user+'/'+project
@@ -42,4 +44,8 @@ def integrate(user, project, implementations):
 
 
 def proj_sequence(build_seq):
+    for prj in build_seq:
+        prj=project_by_name(prj)
+        prj.base=...
+        pass
     pass #return list of vfs with base='subtaskname' .........

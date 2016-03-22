@@ -55,7 +55,6 @@ def apply_subtasks(project, impls):
     impl.base=impls[0].base
     apply_subtasks(impl, impls[1:])
     #apply changes from impl:
-    #get subtask data and subst it into project:
     try:
         base=project.base
     except:
