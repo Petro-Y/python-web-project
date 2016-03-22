@@ -40,7 +40,8 @@ def create_db():
             (2, 1, 'subtask'),
             (3, 1, 'subtask_done'),
             (4, 1, 'subtask_cancelled'),
-            (5, 2, 'qa_task');
+            (5, 2, 'qa_task'),
+            (6, 0, 'implementation');
     create table test(
             id int,
             report text,

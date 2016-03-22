@@ -14,6 +14,13 @@ class VFS:
         return path
     def parse_path(self, path):
         return list(filter(lambda s:s, path.split('/')))#also remove empty items
+    def clone(self, another_vfs):
+        #remove all files:
+        for f in self.get_all_files():
+            self.rm(f)
+        #copy all files from another_vfs:
+        for f in another_vfs.get_all_files():
+            self.save(f, another_vfs.load(f))
     def get_all_files(self): pass
     def get_all_dirs(self): pass
     def mkdir(self, path): pass
@@ -21,6 +28,8 @@ class VFS:
     def ls(self, path): pass
     def exists(self, path): pass
     def isdir(self, path): pass
+    def load(self, path):  pass
+    def save(self, path, linelist): pass
 
 class ListReadStream:
     def __init__(self, lst):
