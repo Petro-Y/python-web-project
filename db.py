@@ -231,6 +231,23 @@ def add_project(user, project):
     cur.close() 
     conn.close()
 
+def add_impl(user, project, st_user, st):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    cur.execute('''
+        insert into project (user_id, name, status) 
+        select user.id, ?, 6 from user where name=?
+        ''', (project, user))
+    cur.execute('''
+        insert into project_rel (slave_id, master_id)
+        select ?, project.id from project
+        join user on project.user_id=user.id
+        where user.name=? and project.name=?
+        ''',(cur.lastrowid, st_user, st))
+    conn.commit()
+    cur.close() 
+    conn.close()
+
 
 
         
