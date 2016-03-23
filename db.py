@@ -3,7 +3,7 @@ from sqlite3 import connect
 from hashlib import md5
 import os
 
-from proj import project_by_name
+#from proj import project_by_name
 from settings import db_name, passhashsecret
 
 def create_db():
@@ -86,7 +86,7 @@ def project_data(user, project):
     cur.close()
     
     #files:
-    files=project_by_name(user, project).get_all_files()
+    #files=project_by_name(user, project).get_all_files()
     
     #subtasks:
     cur=conn.cursor()

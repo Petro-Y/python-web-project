@@ -1,7 +1,7 @@
 # project factory implementation
 
 import vfs
-#import db
+import db
 import tasktools
 from settings import usersdir, buildsdir
 
@@ -56,4 +56,5 @@ def proj_sequence(build_seq):
     pass #return list of vfs with base='subtaskname' .........
 
 def project_data(user, project):
-    pass#db.project_data+dict(files=project_by_name(user, project).get_all_files())....
+    return dict(files=project_by_name(user, project).get_all_files(),
+        db.project_data(user, project))

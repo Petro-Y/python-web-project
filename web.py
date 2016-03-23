@@ -9,6 +9,7 @@ import os
 
 from db import *
 import proj
+from proj import project_by_name
 from settings import secret_key, upload_folder, rootdir
 
 
