@@ -38,21 +38,22 @@ def build(user, project, implementations):
     #copy project_vfs => build_vfs:
     build_vfs.clone(project_vfs)
     #apply_subtasks in a temporary copy of the project
+    implementations=proj_sequence(implementations)
     tasktools.apply_subtasks(build_vfs, implementations)
     #store buid info in db....
     return buildname
 
 def integrate(user, project, implementations):
-    #apply_subtasks permanently......
+    "apply_subtasks permanently"
+    project_vfs=project_by_name(user, project)
+    implementations=proj_sequence(implementations)
+    tasktools.apply_subtasks(build_vfs, implementations)
+    #store information about this build.....
     pass
 
 
 def proj_sequence(build_seq):
-    for prj in build_seq:
-        prj=project_by_name(prj)
-        #prj.base=...
-        pass
-    pass #return list of vfs with base='subtaskname' .........
+    return list(map(project_by_name, build_seq))
 
 def project_data(user, project):
     return dict(files=project_by_name(user, project).get_all_files(),
