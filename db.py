@@ -282,7 +282,36 @@ def add_test_project(user, project, st):
     cur.close() 
     conn.close()
 
-
+def clone_project(old_user, old_project, new_user, new_project):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    cur.execute('''
+        insert into project (user_id, name, status)
+        select newuser.id, ?, oldproject.status from project as oldproject
+        join user as olduser on olproject.user_id=olduser.id
+        join user as newuser
+        where newuser.name=? and oldproject.name=? and olduser.name=?
+        ''', (new_project, new_user, old_project, old_user))
+    new_id=cur.lastrowid
+    old_id=list(cur.execute('''
+        select project.id from project
+        join user on project.user_id=user.id
+        where user.name=? and project.name=?
+        ''', (old_user, old_project)))
+    cur.execute('''
+        insert into project_rel (master_id, slave_id)
+        select ?, slave_id from project_rel
+        where master_id=?
+        ''', (new_id, old_id))
+    cur.execute('''
+        insert into project_rel (master_id, slave_id)
+        select master_id, ? from project_rel
+        where slave_id=?
+        ''', (new_id, old_id))
+    conn.commit()
+    cur.close() 
+    conn.close()
+    pass
 
         
 def check_user(user, password):
