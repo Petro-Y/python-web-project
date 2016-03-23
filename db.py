@@ -237,6 +237,7 @@ def check_user(user, password):
     return False
 
 def get_qa_list(user, project):
+    "Get all QAs watching this project"
     conn=connect(db_name)
     cur=conn.cursor()
     res=[qa for qa, in cur.execute('''
@@ -248,9 +249,10 @@ def get_qa_list(user, project):
     ''', (user, project)))]   
     cur.close()
     conn.close()
-    return res # get all QAs watching this project
+    return res 
 
 def build_sequence(proj_id, impl_id):
+    "Sequence of projects (from project to impl, excluding subtasks)"
     conn=connect(db_name)
     cur=conn.cursor()
     res=list(cur.execute('''
@@ -269,4 +271,20 @@ def build_sequence(proj_id, impl_id):
     ''', (impl_id, proj_id)))
     cur.close()
     conn.close()
-    return res[0][0].split('+')# sequence of projects (from project to impl, excluding subtasks)....
+    return res[0][0].split('+')
+    
+def get_base(user, project):
+    "Return base subtask's name"
+    conn=connect(db_name)
+    cur=conn.cursor()
+    res=list(cur.execute('''
+        select super.name from project as super
+        join project_rel on super.id=master_id
+        join project on project.id=slave_id
+        join user on user.id=project.user_id
+        where project.status=6 
+        and user.name=? and project.name=?
+    ''', (user, project)))
+    cur.close()
+    conn.close()
+    return res[0][0] if res else None
