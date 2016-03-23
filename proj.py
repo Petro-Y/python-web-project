@@ -24,11 +24,10 @@ def project_fork(old_user, old_project, new_user, new_project):
     old_project_vfs=vfs.DiskVFS(path)
     path=usersdir+new_user+'/'+new_project
     new_project_vfs=vfs.DiskVFS(path)
-    #copy files.....
+    #copy some data in db:
+    db.clone_project(old_user, old_project, new_user, new_project)
+    #copy files:
     new_project_vfs.clone(old_project_vfs)
-    #copy some data in db.......
-
-    pass
 
 def build(user, project, implementations):
     buildname=str(uuid4())#unical random name
