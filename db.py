@@ -219,6 +219,22 @@ def add_user(user, password, email):
     conn.commit()
     cur.close() 
     conn.close()
+    
+def add_project(user, project):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    user_id=list(cur.execute('''
+    select id from user where name=?
+    ''', (user,)))[0][0]
+    cur.execute('''
+    insert into project (user_id, name, status) values (?, ?, 0);
+    ''', (user, project))
+    conn.commit()
+    cur.close() 
+    conn.close()
+
+
+
         
 def check_user(user, password):
     try:
