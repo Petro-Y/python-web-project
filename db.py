@@ -248,6 +248,40 @@ def add_impl(user, project, st_user, st):
     cur.close() 
     conn.close()
 
+def add_subtask(user, project, st):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    cur.execute('''
+        insert into project (user_id, name, status) 
+        select user.id, ?, 2 from user where name=?
+        ''', (st, user))
+    cur.execute('''
+        insert into project_rel (slave_id, master_id)
+        select ?, project.id from project
+        join user on project.user_id=user.id
+        where user.name=? and project.name=?
+        ''',(cur.lastrowid, user, project))
+    conn.commit()
+    cur.close() 
+    conn.close()
+
+def add_test_project(user, project, st):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    cur.execute('''
+        insert into project (user_id, name, status) 
+        select user.id, ?, 1 from user where name=?
+        ''', (project, user))
+    cur.execute('''
+        insert into project_rel (slave_id, master_id)
+        select project.id, ? from project
+        join user on project.user_id=user.id
+        where user.name=? and project.name=?
+        ''',(cur.lastrowid, user, st))
+    conn.commit()
+    cur.close() 
+    conn.close()
+
 
 
         
