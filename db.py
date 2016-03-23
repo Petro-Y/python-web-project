@@ -113,11 +113,13 @@ def project_data(user, project):
     ''', (user, project))
     supertasks=[row[0]+'/'+row[1] for row in cur]
     cur.close()
+    
+    #reports.....
 
     conn.close()
 
     return dict( user=user, project=project,
-            is_subtask=is_subtask, files=files,
+            is_subtask=is_subtask, #files=files,
             subtasks=subtasks, supertasks=supertasks)
   except:
     #print('project_data problems...')
@@ -164,7 +166,8 @@ def user_data(username):
     qatasks= [[bname]+build_sequence(bproject_id, bimpl_id)
         for bname, bproject_id, bimpl_id, bcreated in qatasks]
     
-    #reports....
+    #reports: find all reports for this user's projects....
+    
     return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks, reports=reports)
   except:
     return dict(user=username, error='Stub mode (DB is inaccessible)',
@@ -234,7 +237,18 @@ def check_user(user, password):
     return False
 
 def get_qa_list(user, project):
-    pass# get all QAs watching this project......
+    conn=connect(db_name)
+    cur=conn.cursor()
+    res=[qa for qa, in cur.execute('''
+    select qauser.name from user
+    join project on project.user_id=user.id
+    join qa_watch on qa_watch.project_id=project.id
+    join user as qauser on qa_watch.qa_user_id=qauser.id
+    where user.name=? and project.name=?
+    ''', (user, project)))]   
+    cur.close()
+    conn.close()
+    return res # get all QAs watching this project
 
 def build_sequence(proj_id, impl_id):
     conn=connect(db_name)
