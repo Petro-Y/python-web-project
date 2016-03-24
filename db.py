@@ -43,12 +43,12 @@ def create_db():
             (5, 2, 'qa_task'),
             (6, 0, 'implementation');
     create table test(
-            id int,
+            id integer primary key autoincrement,
             report text,
             build_id int
             );
     create table build(
-           id int,
+           id integer primary key autoincrement,
            name char(120),
            project_id int,
            impl_id int,
@@ -312,6 +312,24 @@ def clone_project(old_user, old_project, new_user, new_project):
     cur.close() 
     conn.close()
     pass
+    
+def add_build(proj_user, project, impl_user, impl):
+    conn=connect(db_name)
+    cur=conn.cursor()
+    cur.execute('''
+        insert into build (project_id, impl_id, created)
+        select main.id, impl.id, now
+        from project as main
+        join user as mainuser on main.user_id=mainuser.id
+        join project as impl 
+        join user as impluser on impl.user_id=impluser.id
+        where mainuser.name=? and main.name=?
+        and imluser.name=? and impl.name=?
+        ''', (proj_user, project, impl_user, impl))
+    conn.commit()
+    cur.close() 
+    conn.close()
+    pass#.....
 
         
 def check_user(user, password):

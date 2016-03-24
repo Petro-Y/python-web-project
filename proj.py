@@ -58,3 +58,18 @@ def proj_sequence(build_seq):
 def project_data(user, project):
     return dict(files=project_by_name(user, project).get_all_files(),
         db.project_data(user, project))
+
+def add_test_project(user, project, st):
+    db.add_test_project(user, project, st)
+    #create empty directory, or clone master project?....
+    
+def add_subtask(user, project, st):
+    db.add_subtask(user, project, st)
+    #extract subtask files from project.....
+    
+def add_impl(user, project, st_user, st):
+    db.add_impl(user, project, st_user, st)
+    #clone subtask files:
+    st_vfs=project_by_name(st_user, st)
+    impl_vfs=project_by_name(user, project)
+    impl_vfs.clone(st_vfs)
