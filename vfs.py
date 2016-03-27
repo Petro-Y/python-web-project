@@ -1,5 +1,6 @@
 import re
-
+import os
+import os.path
 
 class VFS:
     '''
@@ -86,10 +87,35 @@ class DiskVFS(StreamVFS):
         super().__init__(*args, **kwargs)
         self.basepath=path
         #if such dir not exist, create it....
-    def open(self, path, *args, **kwargs):
-        #prepare path....
-        #if mode='w', create all directories for this file if they don't exist.....
-        return open(path, *args, **kwargs)
+    def localpath(self, path):
+        path=re.sub(r'^[\\/]*', '', path)
+        return os.path.join(self.basepath, path)    
+    def open(self, path, mode='r', *args, **kwargs):
+        path=self.localpath(path)
+        if set(mode) & {'w', 'a', 'x'}:
+            os.makedirs(os.path.dirname(path))
+            #create all directories for this file if they don't exist
+        return open(path, mode, *args, **kwargs)
+    def get_all_files(self, path=''):
+        for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
+            if self.isdir(fname):
+                yield from get_all_files(fname)
+            else:
+                yield fname
+    def get_all_dirs(self): pass
+    def mkdir(self, path): pass
+    def rm(self, path):
+        path=self.localpath(path)
+        os.remove(path)
+        
+    def ls(self, path): 
+        path=self.localpath(path)
+        return os.listdir(path)
+        
+    def exists(self, path): pass
+    def isdir(self, path): pass
+    def load(self, path):  pass
+    def save(self, path, linelist): pass        
     pass
 
 class SubdirVFS(VFS):

@@ -308,10 +308,11 @@ def clone_project(old_user, old_project, new_user, new_project):
         select master_id, ? from project_rel
         where slave_id=?
         ''', (new_id, old_id))
+    build_id=cur.lastrowid
     conn.commit()
     cur.close() 
     conn.close()
-    pass
+    return build_id
     
 def add_build(proj_user, project, impl_user, impl):
     conn=connect(db_name)
