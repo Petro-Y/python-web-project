@@ -23,8 +23,17 @@ class VFS:
         for f in another_vfs.get_all_files():
             self.save(f, another_vfs.load(f))
         return self
-    def get_all_files(self): pass
-    def get_all_dirs(self): pass
+    def get_all_files(self, path=''):
+        for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
+            if self.isdir(fname):
+                yield from get_all_files(fname)
+            else:
+                yield fname
+    def get_all_dirs(self): 
+        for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
+            if self.isdir(fname):
+                yield fname
+                yield from get_all_dirs(fname)
     def mkdir(self, path): pass
     def rm(self, path): pass
     def ls(self, path): pass
@@ -96,14 +105,11 @@ class DiskVFS(StreamVFS):
             os.makedirs(os.path.dirname(path))
             #create all directories for this file if they don't exist
         return open(path, mode, *args, **kwargs)
-    def get_all_files(self, path=''):
-        for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
-            if self.isdir(fname):
-                yield from get_all_files(fname)
-            else:
-                yield fname
-    def get_all_dirs(self): pass
-    def mkdir(self, path): pass
+        
+    def mkdir(self, path): 
+        path=self.localpath(path)
+        os.makedirs(path)
+        
     def rm(self, path):
         path=self.localpath(path)
         os.remove(path)
@@ -112,10 +118,12 @@ class DiskVFS(StreamVFS):
         path=self.localpath(path)
         return os.listdir(path)
         
-    def exists(self, path): pass
-    def isdir(self, path): pass
-    def load(self, path):  pass
-    def save(self, path, linelist): pass        
+    def exists(self, path): 
+        return os.path.exists(self.localpath(path))
+    def isdir(self, path): 
+        return os.path.isdir(self.localpath(path))
+    #def load(self, path):  pass
+    #def save(self, path, linelist): pass        
     pass
 
 class SubdirVFS(VFS):
