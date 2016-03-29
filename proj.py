@@ -76,5 +76,9 @@ def add_impl(user, project, st_user, st):
     
 def find_subtasks(user, project):
     subtasks=extract_subtasks(project_by_name(user, project))
-    #store them on disk.....
+    #store them on disk and add to db.....
+    for stname, st in subtasks.items:
+        add_subtask(user, project, stname)
+        project_by_name(user, stname).clone(st)
+        
     pass
