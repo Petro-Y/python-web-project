@@ -95,14 +95,19 @@ def file_page(user, project, fname):
     
 @app.route('/<user>/<project>/<path:fname>', methods=['POST'])
 def file_post(user, project, fname):
+    print(user, project, fname)
     content=request.form['content']
+    print(user, project, fname, 'content is OK')
     if session['current_user']!=user:
         return render_template('file.html', f=content, fname=fname, user=user, project=project,
                error='Ви не маєте прав редагувати файл. Створіть відгалуження проекту чи реалізацію підзадачі')
         #show error message (fork/implement?)
     #save changes:
+    print(user, project, fname, 'user check is OK')
     project_vfs=proj.project_by_name(user, project)
+    print(user, project, fname, 'project_by_name is OK')
     project_vfs.save(fname, content)
+    print(user, project, fname, 'save is OK')
     return redirect('.')
 
 @app.route('/<user>/<project>/', methods=['GET'])

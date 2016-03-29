@@ -391,17 +391,21 @@ def build_sequence(proj_id, impl_id):
     return res[0][0].split('+')
     
 def get_base(user, project):
-    "Return base subtask's name"
-    conn=connect(db_name)
-    cur=conn.cursor()
-    res=list(cur.execute('''
-        select super.name from project as super
-        join project_rel on super.id=master_id
-        join project on project.id=slave_id
-        join user on user.id=project.user_id
-        where project.status=6 
-        and user.name=? and project.name=?
-    ''', (user, project)))
-    cur.close()
-    conn.close()
-    return res[0][0] if res else None
+    try:
+        "Return base subtask's name"
+        conn=connect(db_name)
+        cur=conn.cursor()
+        res=list(cur.execute('''
+            select super.name from project as super
+            join project_rel on super.id=master_id
+            join project on project.id=slave_id
+            join user on user.id=project.user_id
+            where project.status=6 
+            and user.name=? and project.name=?
+        ''', (user, project)))
+        cur.close()
+        conn.close()
+        return res[0][0] if res else None
+    except Exception as e:
+        print(e)
+        return None
