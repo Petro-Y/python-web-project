@@ -170,7 +170,9 @@ def project_post(user, project):
         #integrate current implementation into target project....
         pass
     elif action=='find_subtasks':
-        pass
+        proj.find_subtasks(user, project)
+    elif action=='add_file':
+        return redirect('/'+user+'/'+project+'/'+request.form['filename'])
     return redirect('/'+user+'/'+project)
 
 

@@ -15,6 +15,10 @@
         {% for f in files %}
         <li><a href="{{f}}">{{f}}</a></li>
         {% endfor %}
+        <li><form method=POST>
+        	<input name=filename placeholder="Add file">
+        	<input name=action value=add_file type=hidden><input type=submit>
+        </form></li>
         </ul>
     </li>
     {%if supertasks%}
