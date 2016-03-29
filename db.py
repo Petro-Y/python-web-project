@@ -83,6 +83,8 @@ def project_data(user, project):
     for row in cur:
         #is_subtask: select status from project
         is_subtask=row[0]==1
+    else:
+        is_subtask=False
     cur.close()
     
     #files:
@@ -94,7 +96,7 @@ def project_data(user, project):
     select slaveuser.name, slave.name from project as slave
     join project_rel on project_rel.slave_id=slave.id
     join project as master on project_rel.master_id=master.id
-    join user as slaveuser on slave.user_id=slauser.id
+    join user as slaveuser on slave.user_id=slaveuser.id
     join user as masteruser on master.user_id=masteruser.id
     where masteruser.name=? and master.name=?
     ''', (user, project))
@@ -107,7 +109,7 @@ def project_data(user, project):
     select masteruser.name, master.name from project as slave
     join project_rel on project_rel.slave_id=slave.id
     join project as master on project_rel.master_id=master.id
-    join user as slaveuser on slave.user_id=slauser.id
+    join user as slaveuser on slave.user_id=slaveuser.id
     join user as masteruser on master.user_id=masteruser.id
     where slaveuser.name=? and slave.name=?
     ''', (user, project))
@@ -121,8 +123,9 @@ def project_data(user, project):
     return dict( user=user, project=project,
             is_subtask=is_subtask, #files=files,
             subtasks=subtasks, supertasks=supertasks)
-  except:
+  except Exception as e:
     #print('project_data problems...')
+    print(e)
     return dict( user=user, project=project, error='Stub mode (DB is inaccessible)',
         files=['file1.c', 'file2.c', 'file3.html'],#get them from project_vfs........
         subtasks=['st1', 'st2'],#project_vfs.get_subtasks() ......
@@ -137,13 +140,13 @@ def user_data(username):
     conn=connect(db_name)
     cur=conn.cursor()
     projects=[p for p, in cur.execute('''
-        select name from project
+        select project.name from project
         join user on user.id=project.user_id
         join status on project.status=status.id
         where user.name=? and status.category=0
     ''', (username,))]
     subtasks=[p for p, in cur.execute('''
-        select name from project
+        select project.name from project
         join user on user.id=project.user_id
         join status on project.status=status.id
         where user.name=? and status.category=1
@@ -151,7 +154,7 @@ def user_data(username):
     #qa tasks: 
     #find builds w/o test report for all watched projects....
     qatasks=list(cur.execute('''
-            with recursive ancestor as 
+            with recursive ancestor (project_id) as 
                 (select project_id from qa_watch
                 join user on user.id=qa_watch.qa_user_id
                 where user.name=?
@@ -166,10 +169,11 @@ def user_data(username):
     qatasks= [[bname]+build_sequence(bproject_id, bimpl_id)
         for bname, bproject_id, bimpl_id, bcreated in qatasks]
     
-    #reports: find all reports for this user's projects....
+    reports=()#reports: find all reports for this user's projects....
     
     return dict(user=username, projects=projects, subtasks=subtasks, quatasks=qatasks, reports=reports)
-  except:
+  except Exception as e:
+    print(e)
     return dict(user=username, error='Stub mode (DB is inaccessible)',
                 projects=['project1', 'project2'],
                 subtasks=['subtask1', 'subtask2'],
@@ -359,7 +363,7 @@ def get_qa_list(user, project):
     join qa_watch on qa_watch.project_id=project.id
     join user as qauser on qa_watch.qa_user_id=qauser.id
     where user.name=? and project.name=?
-    ''', (user, project)))]   
+    ''', (user, project))]   
     cur.close()
     conn.close()
     return res 

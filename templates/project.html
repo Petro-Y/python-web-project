@@ -31,15 +31,19 @@
         </ul>
     </li>
     {%endif%}
-    {%if subtasks%}
     <li id=subtasks><a href=#subtasks>{%if is_subtask%}Implementetions{%else%}Subtasks{%endif%}</a>
         <ul>
         {% for p in subtasks %}
         <li><a href="../{{p}}">{{p}}</a></li>
         {% endfor %}
+        <li>
+	    <form method=POST>
+            <input type="hidden" name="action" value="find_subtasks">
+            <input type=submit value="Find subtasks">
+            </form>
+        </li>
         </ul>
     </li>
-    {%endif%}
     <li id=test><a href=#test>Send report</a>
 	    <form method=POST>
             <input type="hidden" name="action" value="send_report">

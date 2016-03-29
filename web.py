@@ -158,19 +158,29 @@ def project_post(user, project):
                 zf.extractall()#prepare target path....
                 # (create new folder for extracted, then remove old files and move it on their place)....
     elif action=='build':
+        target_user, target_project=request.form['target'].split('/', 1)
         #  create test build ...
-        buildname='build/'+proj.build(...)
+        # impl (user, project) = current project
+        # project (user, project) = target project
+        buildname='build/'+proj.build(target_user, target_project, impls)
         #  emit message to QA...
         for qa in get_qa_list(user, project):
             socketio.emit('qa_request '+qa, {'build': buildname})
     elif action=='integrate':
         #integrate current implementation into target project....
         pass
-    return redirect('/user/project/')
+    elif action=='find_subtasks':
+        pass
+    return redirect('/'+user+'/'+project)
 
 
 @app.route('/<user>/', methods=['GET'])
 def user_page(user):
+    try:
+        if request.args.get('newproject'):
+            add_project(user, request.args.get('newproject'))
+    except:
+        pass
     return render_template('user.html', **user_data(user))
 
 try:

@@ -57,7 +57,7 @@ def proj_sequence(build_seq):
 
 def project_data(user, project):
     return dict(files=project_by_name(user, project).get_all_files(),
-        db.project_data(user, project))
+        **db.project_data(user, project))
 
 def add_test_project(user, project, st):
     db.add_test_project(user, project, st)
@@ -73,3 +73,8 @@ def add_impl(user, project, st_user, st):
     st_vfs=project_by_name(st_user, st)
     impl_vfs=project_by_name(user, project)
     impl_vfs.clone(st_vfs)
+    
+def find_subtasks(user, project):
+    subtasks=extract_subtasks(project_by_name(user, project))
+    #store them on disk.....
+    pass
