@@ -109,3 +109,8 @@
     {
     background:#ddd;
     }
+#logout, logout a
+	{
+	bakcground:black;
+	color:white;
+	}

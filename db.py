@@ -391,6 +391,7 @@ def build_sequence(proj_id, impl_id):
     return res[0][0].split('+')
     
 def get_base(user, project):
+    print('get_base', user, project)
     try:
         "Return base subtask's name"
         conn=connect(db_name)
@@ -405,6 +406,7 @@ def get_base(user, project):
         ''', (user, project)))
         cur.close()
         conn.close()
+        print('base is', res)
         return res[0][0] if res else None
     except Exception as e:
         print(e)

@@ -1,3 +1,4 @@
+#!py -3 -i
 # project factory implementation
 
 import vfs
@@ -17,8 +18,10 @@ def project_by_name(user, project=None):
     print('DiskVFS is OK')
     #or extract it from cache(?) ....
     #add properties (stored in db): subtasks, supertasks, status....
-    #project.base=db.get_base(user, project)
-    print('base is NOT ok')
+    base=db.get_base(user, project)
+    print('base is ok')
+    project_vfs.base=base
+    print('base assignment is ok')
     return project_vfs
 
 def project_fork(old_user, old_project, new_user, new_project):
@@ -58,6 +61,7 @@ def proj_sequence(build_seq):
     return list(map(project_by_name, build_seq))
 
 def project_data(user, project):
+    print('I am project_data', user, project)
     return dict(files=project_by_name(user, project).get_all_files(),
         **db.project_data(user, project))
 

@@ -9,7 +9,7 @@ import os
 
 from db import *
 import proj
-from proj import project_by_name
+from proj import project_by_name, project_data
 from settings import secret_key, upload_folder, rootdir
 
 
@@ -202,4 +202,4 @@ except:
     pass
 
 if __name__=='__main__':
-    socketio.run(app)
+    socketio.run(app, host='0.0.0.0')

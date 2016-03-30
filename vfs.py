@@ -1,3 +1,4 @@
+#!py -3 -i
 import re
 import os
 import os.path
@@ -26,14 +27,14 @@ class VFS:
     def get_all_files(self, path=''):
         for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
             if self.isdir(fname):
-                yield from get_all_files(fname)
+                yield from self.get_all_files(fname)
             else:
                 yield fname
     def get_all_dirs(self): 
         for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
             if self.isdir(fname):
                 yield fname
-                yield from get_all_dirs(fname)
+                yield from self.get_all_dirs(fname)
     def mkdir(self, path): pass
     def rm(self, path): pass
     def ls(self, path): pass
