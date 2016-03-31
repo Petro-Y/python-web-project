@@ -56,7 +56,7 @@
     padding:0 0 5px;
     margin:0;
     text-decoration:none;
-    color:black;
+    color:inherit;
     }
 .error
     {
@@ -110,8 +110,18 @@
     {
     background:#ddd;
     }
-#logout, logout a
+#logout
 	{
-	bakcground:black;
+	background:black;
 	color:white;
 	}
+	
+h1  {
+    font-family:Arial;
+    font-size:20px;
+    }
+h1 a
+    {
+    text-decoration:none;
+    background:#fef;
+    }

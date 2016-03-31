@@ -7,6 +7,9 @@
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
+<h1><a href="/{{user}}" class=user-ref>{{user}}</a> 
+/ <a href=/{{user}}/{{project}} class=project-ref>{{project}}</a> 
+/ <span class=file-ref>{{fname}}</span></h1>
 <ul class=tabs>
     <li id=files><a href=#files>Edit</a>
     <form method=POST>

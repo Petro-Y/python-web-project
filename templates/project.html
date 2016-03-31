@@ -2,13 +2,13 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>{{user}} &gt; {{project}}</title>
+    <title>{{user}} / {{project}}</title>
     <link rel=stylesheet href=../../static/style.css>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 </head>
 <body>
 {%if error%}<div class="error">{{error}}</div>{%endif%}
-<h1><a href="/{{user}}">{{user}}</a> &gt; {{project}}</h1>
+<h1><a href="/{{user}}" class=user-ref>{{user}}</a> / <span class=project-ref>{{project}}</span></h1>
   <ul class=tabs>
     <li id=files><a href=#files>Files</a>
         <ul>
