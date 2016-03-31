@@ -13,7 +13,7 @@
     <li id=files><a href=#files>Files</a>
         <ul>
         {% for f in files %}
-        <li><a href="{{f}}">{{f}}</a></li>
+        <li><a href=".{{f}}">{{f}}</a></li>
         {% endfor %}
         <li><form method=POST>
         	<input name=filename placeholder="Add file">

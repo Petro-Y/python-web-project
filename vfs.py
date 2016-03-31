@@ -30,7 +30,7 @@ class VFS:
                 yield from self.get_all_files(fname)
             else:
                 yield fname
-    def get_all_dirs(self): 
+    def get_all_dirs(self, path=''): 
         for fname in map(lambda fname: path+'/'+fname, self.ls(path)):
             if self.isdir(fname):
                 yield fname
@@ -101,15 +101,15 @@ class DiskVFS(StreamVFS):
         path=re.sub(r'^[\\/]*', '', path)
         return os.path.join(self.basepath, path)    
     def open(self, path, mode='r', *args, **kwargs):
-        path=self.localpath(path)
         if set(mode) & {'w', 'a', 'x'}:
-            os.makedirs(os.path.dirname(path))
-            #create all directories for this file if they don't exist
+            self.mkdir(os.path.dirname(path))
+            #create all directories for this file if they don't exist        
+        path=self.localpath(path)
         return open(path, mode, *args, **kwargs)
         
     def mkdir(self, path): 
         path=self.localpath(path)
-        os.makedirs(path)
+        os.makedirs(path, exist_ok=True)
         
     def rm(self, path):
         path=self.localpath(path)
@@ -181,3 +181,6 @@ class DictVFS(ListVFS):
                 res+=[name]
         return res
 
+class DBVFS(VFS):
+    '''VFS stored in DB'''
+    pass
