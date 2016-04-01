@@ -26,7 +26,8 @@ def find_fragments(project, base=None, only_file=None):
                     fragments+=[dict(
                             begin=ln,
                             name=stname[0],
-                            globalname='%s@%s' % (stname[0].split('/', 1)[0], project.id),
+                            #globalname='%s@%s' % (stname[0].split('/', 1)[0], project.id),
+                            globalname=stname[0].split('/', 1)[0],
                             filename=filename)]
                 nested+=1
             elif s.find(':endsubtask:')>=0:
@@ -38,15 +39,18 @@ def find_fragments(project, base=None, only_file=None):
 
     
 def extract_subtasks(project):
+  print('extract_subtasks')
+  try:
     subtasks={}
     for fr in find_fragments(project):
         if fr['globalname'] not in subtasks:
             subtasks[fr['globalname']]=Project(implements=fr['globalname'])
-        
         subtasks[fr['globalname']].save(fr['filename'], 
         subtasks[fr['globalname']].load(fr['filename'])
         +project.load(fr['filename'])[fr['begin']-1:fr['end']])
     return subtasks
+  except Exception as e:
+      print('extract_subtasks', e)
     
 def apply_subtasks(project, impls):
     # Переробити: рекурсивно викликати останню пару impls...

@@ -38,7 +38,7 @@
     <li id=subtasks><a href=#subtasks>{%if is_subtask%}Implementetions{%else%}Subtasks{%endif%}</a>
         <ul>
         {% for p in subtasks %}
-        <li><a href="../{{p}}">{{p}}</a></li>
+        <li><a href="/{{p}}">{{p}}</a></li>
         {% endfor %}
         <li>
 	    <form method=POST>

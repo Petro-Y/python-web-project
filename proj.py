@@ -81,10 +81,13 @@ def add_impl(user, project, st_user, st):
     impl_vfs.clone(st_vfs)
     
 def find_subtasks(user, project):
-    subtasks=extract_subtasks(project_by_name(user, project))
+    print('find_subtasks', user, project)
+    subtasks=tasktools.extract_subtasks(project_by_name(user, project))
+    print('extract_subtasks is OK')
     #store them on disk and add to db.....
-    for stname, st in subtasks.items:
+    for stname, st in subtasks.items():
         add_subtask(user, project, stname)
         project_by_name(user, stname).clone(st)
+    print('adding subtasks is OK')
         
     pass
