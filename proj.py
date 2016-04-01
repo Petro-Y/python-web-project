@@ -15,13 +15,13 @@ def project_by_name(user, project=None):
     print("I'm project_by_name", user, project)
     path=usersdir+user+'/'+project
     project_vfs=vfs.DiskVFS(path)
-    print('DiskVFS is OK')
+    # print('DiskVFS is OK')
     #or extract it from cache(?) ....
     #add properties (stored in db): subtasks, supertasks, status....
     base=db.get_base(user, project)
-    print('base is ok')
+    #print('base is ok')
     project_vfs.base=base
-    print('base assignment is ok')
+    # print('base assignment is ok')
     return project_vfs
 
 def project_fork(old_user, old_project, new_user, new_project):

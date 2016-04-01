@@ -115,9 +115,12 @@ class DiskVFS(StreamVFS):
         path=self.localpath(path)
         os.remove(path)
         
-    def ls(self, path): 
-        path=self.localpath(path)
-        return os.listdir(path)
+    def ls(self, path):
+        try:
+            path=self.localpath(path)
+            return os.listdir(path)
+        except:
+            return []
         
     def exists(self, path): 
         return os.path.exists(self.localpath(path))
