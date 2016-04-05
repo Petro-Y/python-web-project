@@ -116,7 +116,8 @@ def project_data(user, project):
     supertasks=[row[0]+'/'+row[1] for row in cur]
     cur.close()
     
-    #reports.....
+    # reports.....
+    # targets (for build)....
 
     conn.close()
 

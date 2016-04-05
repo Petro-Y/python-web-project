@@ -81,9 +81,13 @@
     	<input type=radio name=action value=build checked>Create test build<br>
     	<input type=radio name=action value=integrate>Integrate this implementation into your project<br>
     	Target project:<select name=target>
-    		<option value=user1/project>user1/project</option>
-    		<option value=user1/testcase>user1/testcase</option>
-    	</select>
+    		<!--<option value=user1/project>user1/project</option>
+    		<option value=user1/testcase>user1/testcase</option>-->
+    	{%for t in targets%}
+    		<option value="/{{t}}">{{t}}</option>
+	{%endfor%}
+    	</select><br>
+    	<input type=submit>
       </form>
     </li>
     <li id=team><a href=#team>Project team</a>

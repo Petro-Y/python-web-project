@@ -188,7 +188,9 @@ def user_page(user):
             add_project(user, request.args.get('newproject'))
     except:
         pass
-    return render_template('user.html', **user_data(user))
+    return render_template('user.html',
+        current_user=session['current_user'] if 'current_user' in session else None,
+        **user_data(user))
 
 try:
     from settings import enable_reset

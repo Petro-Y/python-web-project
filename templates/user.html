@@ -54,7 +54,9 @@
 		{% endfor %}
 		</ul>
 	</li>
-	<li id="logout"><a href=/logout>Log out ({{user}})</a></li>
+	{%if current_user%}
+	<li id="logout"><a href=/logout>Log out ({{current_user}})</a></li>
+	{%endif%}
     </ul>
 </body>
 </html>
