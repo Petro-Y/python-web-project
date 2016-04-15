@@ -62,7 +62,9 @@ def create_db():
            qa_user_id int,
            project_id int
            );
-    ''')
+    '''
+    # views.....
+    )
     conn.commit()
     cur.close()
     conn.close()
@@ -79,7 +81,7 @@ def project_data(user, project):
     join user on project.user_id=user.id
     join status on project.status=status.id
     where user.name=? and project.name=?
-    ''', (user, project))
+    ''', (user, project))#is_subtask_view(user_name, project_name, status_category)
     for row in cur:
         #is_subtask: select status from project
         is_subtask=row[0]==1
@@ -99,7 +101,7 @@ def project_data(user, project):
     join user as slaveuser on slave.user_id=slaveuser.id
     join user as masteruser on master.user_id=masteruser.id
     where masteruser.name=? and master.name=?
-    ''', (user, project))
+    ''', (user, project))# subtasks_view(slaveuser_name, slave_name, masteruser_name, master_name)
     subtasks=[row[0]+'/'+row[1] for row in cur]
     cur.close()
     
@@ -145,13 +147,13 @@ def user_data(username):
         join user on user.id=project.user_id
         join status on project.status=status.id
         where user.name=? and status.category=0
-    ''', (username,))]
+    ''', (username,))]#user_project_view(user_name, project_name)
     subtasks=[p for p, in cur.execute('''
         select project.name from project
         join user on user.id=project.user_id
         join status on project.status=status.id
         where user.name=? and status.category=1
-    ''', (username,))]
+    ''', (username,))]#user_subtask_view(user_name, project_name)
     #qa tasks: 
     #find builds w/o test report for all watched projects....
     qatasks=list(cur.execute('''
@@ -165,7 +167,7 @@ def user_data(username):
             join ancestor on ancestor.project_id=build.impl_id
             join qa_watch on qa_watch.project_id=build.project_id
             where build.id not in (select build_id from test)
-    ''', (username,)))
+    ''', (username,)))#qutasks_view(user_name, build_name, build_project_id, build_impl_id, build_created)
     #find list of implementations for each of them.....
     qatasks= [[bname]+build_sequence(bproject_id, bimpl_id)
         for bname, bproject_id, bimpl_id, bcreated in qatasks]
