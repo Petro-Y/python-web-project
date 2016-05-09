@@ -52,7 +52,7 @@ def integrate(user, project, implementations):
     "apply_subtasks permanently"
     project_vfs=project_by_name(user, project)
     implementations=proj_sequence(implementations)
-    tasktools.apply_subtasks(build_vfs, implementations)
+    tasktools.apply_subtasks(project_vfs, implementations)
     #store information about this build.....
     pass
 
